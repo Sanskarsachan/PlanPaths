@@ -26,6 +26,9 @@ import { AppBar, CssBaseline, IconButton, Toolbar } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Collapse from "@mui/material/Collapse";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -44,6 +47,7 @@ function ResponsiveDrawer(props) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
   const [checked, setChecked] = React.useState([0]);
 
   const handleToggle = (value) => () => {
@@ -58,7 +62,9 @@ function ResponsiveDrawer(props) {
 
     setChecked(newChecked);
   };
+
   const [courses, setCourses] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios.get("/api/courses");
@@ -66,32 +72,115 @@ function ResponsiveDrawer(props) {
     };
     fetchData();
   }, []);
+
+  const [openFilter1, setOpenFilter1] = React.useState(true);
+
+  const handleClick = () => {
+    setOpenFilter1(!openFilter1);
+  };
   const drawer = (
     <div>
-      <Toolbar />
+      <Toolbar sx={{ background: "#2c2f31" }} />
       <Divider />
-      <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+      <List
+        sx={{
+          width: "100%",
+          maxWidth: 360,
+          bgcolor: "background.paper",
+          overflowy: "hidden",
+        }}
+        component="nav"
+      >
+        <ListItemText
+          primary="Filters"
+          primaryTypographyProps={{
+            fontSize: 20,
+            fontWeight: "medium",
+            letterSpacing: 0,
+            align: "center",
+          }}
+        />
         {courses?.map((course) => {
           const labelId = `checkbox-list-label-${course}`;
           return (
-            <ListItem key={course} disablePadding>
-              <ListItemButton
-                role={undefined}
-                onClick={handleToggle(course)}
-                dense
-              >
-                <ListItemIcon>
-                  <Checkbox
-                    edge="start"
-                    checked={checked.indexOf(course) !== -1}
-                    tabIndex={-1}
-                    disableRipple
-                    inputProps={{ "aria-labelledby": labelId }}
-                  />
-                </ListItemIcon>
-                <ListItemText id={labelId} primary={`Filter ${course.value}`} />
+            <div sx={{ overflowy: "hidden" }}>
+              <ListItemButton onClick={handleClick}>
+                <ListItemText primary="Filter 1" />
+                {openFilter1 ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
-            </ListItem>
+              <Collapse in={openFilter1} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  <ListItemButton
+                    sx={{ pl: 4 }}
+                    role={undefined}
+                    onClick={handleToggle(course)}
+                    dense
+                  >
+                    <ListItemIcon>
+                      <Checkbox
+                        edge="start"
+                        checked={checked.indexOf(course) !== -1}
+                        tabIndex={-1}
+                        disableRipple
+                        inputProps={{ "aria-labelledby": labelId }}
+                      />
+                    </ListItemIcon>
+                    <ListItemText primary="Data" />
+                  </ListItemButton>
+                  <ListItemButton
+                    sx={{ pl: 4 }}
+                    role={undefined}
+                    onClick={handleToggle(course)}
+                    dense
+                  >
+                    <ListItemIcon>
+                      <Checkbox
+                        edge="start"
+                        checked={checked.indexOf(course) !== -1}
+                        tabIndex={-1}
+                        disableRipple
+                        inputProps={{ "aria-labelledby": labelId }}
+                      />
+                    </ListItemIcon>
+                    <ListItemText primary="Data" />
+                  </ListItemButton>
+                  <ListItemButton
+                    sx={{ pl: 4 }}
+                    role={undefined}
+                    onClick={handleToggle(course)}
+                    dense
+                  >
+                    <ListItemIcon>
+                      <Checkbox
+                        edge="start"
+                        checked={checked.indexOf(course) !== -1}
+                        tabIndex={-1}
+                        disableRipple
+                        inputProps={{ "aria-labelledby": labelId }}
+                      />
+                    </ListItemIcon>
+                    <ListItemText primary="Data" />
+                  </ListItemButton>
+                  <ListItemButton
+                    sx={{ pl: 4 }}
+                    role={undefined}
+                    onClick={handleToggle(course)}
+                    dense
+                  >
+                    <ListItemIcon>
+                      <Checkbox
+                        edge="start"
+                        checked={checked.indexOf(course) !== -1}
+                        tabIndex={-1}
+                        disableRipple
+                        inputProps={{ "aria-labelledby": labelId }}
+                      />
+                    </ListItemIcon>
+                    <ListItemText primary="Data" />
+                  </ListItemButton>
+                </List>
+              </Collapse>
+            </div>
           );
         })}
       </List>
@@ -100,14 +189,16 @@ function ResponsiveDrawer(props) {
   const container =
     window !== undefined ? () => window().document.body : undefined;
   return (
-    <div sx={{ mt: 30 }}>
+    <div>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
         <AppBar
           sx={{
             width: { sm: `calc(100% - ${drawerWidth}px)` },
             ml: { sm: `${drawerWidth}px` },
-            mt: 8,
+            mt: 7,
+            maxHeight: "60px",
+            display: { xs: "block" ,lg: "none"}
           }}
         >
           <Toolbar>
@@ -115,7 +206,7 @@ function ResponsiveDrawer(props) {
               color="inherit"
               aria-label="open drawer"
               onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { sm: "none" }, mt: 8 }}
+              sx={{ mr: 2, display: { sm: "none" }, mt: 1 }}
             >
               <MenuIcon />
             </IconButton>
@@ -123,7 +214,7 @@ function ResponsiveDrawer(props) {
         </AppBar>
         <Box
           component="nav"
-          sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 }, mt: 8 }}
+          sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 }, mt: 7 }}
           aria-label="mailbox folders"
         >
           {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
@@ -140,6 +231,7 @@ function ResponsiveDrawer(props) {
               "& .MuiDrawer-paper": {
                 boxSizing: "border-box",
                 width: drawerWidth,
+                overflowy: "hidden"
               },
             }}
           >
@@ -152,6 +244,7 @@ function ResponsiveDrawer(props) {
               "& .MuiDrawer-paper": {
                 boxSizing: "border-box",
                 width: drawerWidth,
+                overflowy: "hidden",
               },
             }}
             open
@@ -167,37 +260,32 @@ function ResponsiveDrawer(props) {
             width: { sm: `calc(100% - ${drawerWidth}px)` },
           }}
         >
-          <Grid xs={3}>
+          <Grid mt={18}>
             <Item>
-              <Grid
-                container
-                spacing={2}
-                sx={{
-                  "--Grid-borderWidth": "1px",
-                  borderTop: "var(--Grid-borderWidth)",
-                  borderLeft: "var(--Grid-borderWidth)",
-                  "& > div": {
-                    borderRight: "var(--Grid-borderWidth)",
-                    borderBottom: "var(--Grid-borderWidth)",
-                  },
-                }}
-              >
+              <Grid container spacing={2}>
                 {courses?.map((course) => (
-                  <Grid {...{ xs: 12, sm: 12, md: 12, lg: 12 }} minHeight={160}>
+                  <Grid {...{ xs: 12, sm: 12, md: 12, lg: 12 }} minHeight={400}>
                     <Link
                       to={`/courses/${course.code}`}
-                      style={{ textDecoration: "none" }}
+                      sx={{ textDecoration: "none" }}
                     >
                       <Card
                         key={course}
                         size="lg"
-                        variant="solid #000"
                         color="#000"
-                        border="1px"
                         invertedColors
-                        sx={{ bgcolor: "#fff" }}
+                        sx={{
+                          bgcolor: "#fff",
+                          "--Grid-borderWidth": "1px",
+                          borderTop: "var(--Grid-borderWidth)",
+                          borderLeft: "var(--Grid-borderWidth)",
+                          "& > div": {
+                            borderRight: "var(--Grid-borderWidth)",
+                            borderBottom: "var(--Grid-borderWidth)",
+                          },
+                        }}
                       >
-                        <Chip size="sm" variant="outlined">
+                        <Chip size="m"  variant="outlined">
                           {course.tag}
                         </Chip>
                         <Typography level="h2" align="left">
@@ -220,9 +308,9 @@ function ResponsiveDrawer(props) {
                         <List
                           size="sm"
                           sx={{
-                            display: "grid",
                             gridTemplateColumns: "0.5fr 0.5fr",
                             mx: "calc(-1 * var(--ListItem-paddingX))",
+                            display: { lg: "grid", sm: "block" },
                           }}
                         >
                           <ListItem>
@@ -277,10 +365,7 @@ function ResponsiveDrawer(props) {
                         <Divider inset="none" />
                         <CardActions>
                           <Typography level="title-lg" sx={{ mr: "auto" }}>
-                            {course.cost}${" "}
-                            <Typography fontSize="sm" textColor="text.tertiary">
-                              / year
-                            </Typography>
+                            {course.cost}${"/ year"}
                           </Typography>
                           <Button endDecorator={<KeyboardArrowRight />}>
                             Add To Cart

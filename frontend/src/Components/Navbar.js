@@ -51,7 +51,7 @@ const Header = () => {
   return (
     <React.Fragment>
       <AppBar sx={{ background: "#2c2f31"}}>
-        <Toolbar sx={{ zIndex:999}}>
+        <Toolbar >
           {isMatch ? (
             <>
               <Typography
@@ -76,7 +76,6 @@ const Header = () => {
                 sx={{ transform: "scale(2)" }}
               />
               <Typography
-                onChange={(e, value) => setValue(value)}
                 component={Link}
                 to={"/Home"}
                 label="Home"
