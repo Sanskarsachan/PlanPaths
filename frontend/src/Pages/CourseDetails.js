@@ -38,8 +38,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
+function createData(name, calories) {
+  return { name, calories};
 }
 
 const rows = [
@@ -55,10 +55,11 @@ export default function CourseDetails() {
   const { code } = params;
   return (
     <>
-      {/* {data.courses?.map((course) => ( */}
       <Paper
         sx={{
           margin: "auto",
+          pt:10,
+          pb:5,
           maxWidth: 1000,
           flexGrow: 1,
           boxShadow: "none",
@@ -70,7 +71,7 @@ export default function CourseDetails() {
           container
           spacing={2}
           sx={{
-            pb: 2,
+            pb: 2,  
             mt: 2,
             border: "3px solid #D6D6D6",
             borderRadius: "8px",

@@ -2,7 +2,7 @@ const data = {
   courses: [
     {
       name: "English 1 for Credit Recovery", //absolute
-      code: "1001315", //absolute
+      code: "1001001", //absolute
       type: "English", //absolute
       tag: "Tagline",
       credits: 1.0,
@@ -22,7 +22,7 @@ const data = {
     },
     {
       name: "English 1 for Credit Recovery",
-      code: "1001315",
+      code: "1001002",
       type: "English",
       tag: "Tagline",
       credits: 1.0,
@@ -42,7 +42,7 @@ const data = {
     },
     {
       name: "English 1 for Credit Recovery",
-      code: "1001315",
+      code: "1001003",
       type: "English",
       tag: "Tagline",
       credits: 1.0,
@@ -62,7 +62,7 @@ const data = {
     },
     {
       name: "English 1 for Credit Recovery",
-      code: "1001315",
+      code: "1001004",
       type: "English",
       tag: "Tagline",
       credits: 1.0,
@@ -82,7 +82,7 @@ const data = {
     },
     {
       name: "English 1 for Credit Recovery",
-      code: "1001315",
+      code: "1001005",
       type: "English",
       tag: "Tagline",
       credits: 1.0,
@@ -102,7 +102,7 @@ const data = {
     },
     {
       name: "English 1 for Credit Recovery",
-      code: "1001315",
+      code: "1001006",
       type: "English",
       tag: "Tagline",
       credits: 1.0,

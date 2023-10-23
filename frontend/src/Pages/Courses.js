@@ -24,11 +24,12 @@ import PropTypes from "prop-types";
 import Checkbox from "@mui/material/Checkbox";
 import { AppBar, CssBaseline, IconButton, Toolbar } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import axios from "axios";
 import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import logger from "use-reducer-logger";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -63,12 +64,34 @@ function ResponsiveDrawer(props) {
     setChecked(newChecked);
   };
 
-  const [courses, setCourses] = useState([]);
+  const reducer = (state, action) => {
+    switch (action.type) {
+      case "FETCH_REQUEST":
+        return { ...state, loading: true };
+      case "FETCH_SUCCESS":
+        return { ...state, courses: action.payload, loading: false };
+      case "FETCH_FAIL":
+        return { ...state, loading: false, error: action.payload };
+      default:
+        return state;
+    }
+  };
+
+  const [{ loading, error, courses }, dispatch] = useReducer(logger(reducer), {
+    courses: [],
+    loading: true,
+    error: "",
+  });
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios.get("/api/courses");
-      setCourses(result.data);
+      dispatch({ type: "FETCH_REQUEST" });
+      try {
+        const result = await axios.get("/api/courses");
+        dispatch({ type: "FETCH_SUCCESS", payload: result.data });
+      } catch (err) {
+        dispatch({ type: "FETCH_FAIL", payload: err.message });
+      }
     };
     fetchData();
   }, []);
@@ -78,6 +101,7 @@ function ResponsiveDrawer(props) {
   const handleClick = () => {
     setOpenFilter1(!openFilter1);
   };
+
   const drawer = (
     <div>
       <Toolbar sx={{ background: "#2c2f31" }} />
@@ -100,7 +124,11 @@ function ResponsiveDrawer(props) {
             align: "center",
           }}
         />
-        {courses?.map((course) => {
+   {loading ? (
+                  <div>Loading...</div>
+                ) : error ? (
+                  <div>{error}</div>
+                ) : ( courses?.map((course) => {
           const labelId = `checkbox-list-label-${course}`;
           return (
             <div sx={{ overflowy: "hidden" }}>
@@ -182,7 +210,7 @@ function ResponsiveDrawer(props) {
               </Collapse>
             </div>
           );
-        })}
+          }))}
       </List>
     </div>
   );
@@ -198,7 +226,7 @@ function ResponsiveDrawer(props) {
             ml: { sm: `${drawerWidth}px` },
             mt: 7,
             maxHeight: "60px",
-            display: { xs: "block" ,lg: "none"}
+            display: { xs: "block", lg: "none" },
           }}
         >
           <Toolbar>
@@ -231,7 +259,7 @@ function ResponsiveDrawer(props) {
               "& .MuiDrawer-paper": {
                 boxSizing: "border-box",
                 width: drawerWidth,
-                overflowy: "hidden"
+                overflowy: "hidden",
               },
             }}
           >
@@ -263,119 +291,132 @@ function ResponsiveDrawer(props) {
           <Grid mt={18}>
             <Item>
               <Grid container spacing={2}>
-                {courses?.map((course) => (
-                  <Grid {...{ xs: 12, sm: 12, md: 12, lg: 12 }} minHeight={400}>
-                    <Link
-                      to={`/courses/${course.code}`}
-                      sx={{ textDecoration: "none" }}
+                {loading ? (
+                  <div>Loading...</div>
+                ) : error ? (
+                  <div>{error}</div>
+                ) : (
+                  courses?.map((course) => (
+                    <Grid
+                      {...{ xs: 12, sm: 12, md: 12, lg: 12 }}
+                      minHeight={400}
                     >
-                      <Card
-                        key={course}
-                        size="lg"
-                        color="#000"
-                        invertedColors
-                        sx={{
-                          bgcolor: "#fff",
-                          "--Grid-borderWidth": "1px",
-                          borderTop: "var(--Grid-borderWidth)",
-                          borderLeft: "var(--Grid-borderWidth)",
-                          "& > div": {
-                            borderRight: "var(--Grid-borderWidth)",
-                            borderBottom: "var(--Grid-borderWidth)",
-                          },
-                        }}
+                      <Link
+                        to={`/courses/${course.code}`}
+                        sx={{ textDecoration: "none" }}
                       >
-                        <Chip size="m"  variant="outlined">
-                          {course.tag}
-                        </Chip>
-                        <Typography level="h2" align="left">
-                          {course.name}
-                        </Typography>
-                        <List
-                          size="sm"
+                        <Card
+                          key={course}
+                          size="lg"
+                          color="#000"
+                          invertedColors
                           sx={{
-                            display: "grid",
-                            gridTemplateColumns: "1fr 1fr",
-                            mx: "calc(-1 * var(--ListItem-paddingX))",
+                            bgcolor: "#fff",
+                            "--Grid-borderWidth": "1px",
+                            borderTop: "var(--Grid-borderWidth)",
+                            borderLeft: "var(--Grid-borderWidth)",
+                            "& > div": {
+                              borderRight: "var(--Grid-borderWidth)",
+                              borderBottom: "var(--Grid-borderWidth)",
+                            },
                           }}
                         >
-                          <ListItem>
-                            <Rating name="read-only" value={4} readOnly />
-                          </ListItem>
-                          <ListItem>Reviews {course.review}</ListItem>
-                        </List>
-                        <Divider inset="none" />
-                        <List
-                          size="sm"
-                          sx={{
-                            gridTemplateColumns: "0.5fr 0.5fr",
-                            mx: "calc(-1 * var(--ListItem-paddingX))",
-                            display: { lg: "grid", sm: "block" },
-                          }}
-                        >
-                          <ListItem>
-                            <ListItemDecorator>
-                              <Check />
-                            </ListItemDecorator>
-                            Available Credits: {course.credits}
-                          </ListItem>
-                          <ListItem>
-                            <ListItemDecorator>
-                              <Check />
-                            </ListItemDecorator>
-                            Course Level: {course.level}
-                          </ListItem>
-                          <ListItem>
-                            <ListItemDecorator>
-                              <Check />
-                            </ListItemDecorator>
-                            Course Code: {course.code}
-                          </ListItem>
-                          <ListItem>
-                            <ListItemDecorator>
-                              <Check />
-                            </ListItemDecorator>
-                            Max GPA Weight: {course.weight}
-                          </ListItem>
-                          <ListItem>
-                            <ListItemDecorator>
-                              <Check />
-                            </ListItemDecorator>
-                            Course Length: {course.length}
-                          </ListItem>
-                          <ListItem>
-                            <ListItemDecorator>
-                              <Check />
-                            </ListItemDecorator>
-                            Category Type: {course.type}
-                          </ListItem>
-                          <ListItem>
-                            <ListItemDecorator>
-                              <Check />
-                            </ListItemDecorator>
-                            Course Category: {course.category}
-                          </ListItem>
-                          <ListItem>
-                            <ListItemDecorator>
-                              <Check />
-                            </ListItemDecorator>
-                            Course Sub-category: {course.subcategory}
-                          </ListItem>
-                        </List>
-                        <Divider inset="none" />
-                        <CardActions>
-                          <Typography level="title-lg" sx={{ mr: "auto" }}>
-                            {course.cost}${"/ year"}
+                          <Chip
+                            size="m"
+                            sx={{ pl: 2, pr: 2 }}
+                            variant="outlined"
+                          >
+                            {course.tag}
+                          </Chip>
+                          <Typography size="m" align="left">
+                            {course.name}
                           </Typography>
-                          <Button endDecorator={<KeyboardArrowRight />}>
-                            Add To Cart
-                          </Button>
-                        </CardActions>
-                      </Card>
-                    </Link>
-                    <Divider />
-                  </Grid>
-                ))}
+                          <List
+                            size="sm"
+                            sx={{
+                              display: "grid",
+                              gridTemplateColumns: "1fr 1fr",
+                              mx: "calc(-1 * var(--ListItem-paddingX))",
+                            }}
+                          >
+                            <ListItem>
+                              <Rating name="read-only" value={4} readOnly />
+                            </ListItem>
+                            <ListItem>Reviews {course.review}</ListItem>
+                          </List>
+                          <Divider inset="none" />
+                          <List
+                            size="sm"
+                            sx={{
+                              gridTemplateColumns: "0.5fr 0.5fr",
+                              mx: "calc(-1 * var(--ListItem-paddingX))",
+                              display: { lg: "grid", sm: "block" },
+                            }}
+                          >
+                            <ListItem>
+                              <ListItemDecorator>
+                                <Check />
+                              </ListItemDecorator>
+                              Available Credits: {course.credits}
+                            </ListItem>
+                            <ListItem>
+                              <ListItemDecorator>
+                                <Check />
+                              </ListItemDecorator>
+                              Course Level: {course.level}
+                            </ListItem>
+                            <ListItem>
+                              <ListItemDecorator>
+                                <Check />
+                              </ListItemDecorator>
+                              Course Code: {course.code}
+                            </ListItem>
+                            <ListItem>
+                              <ListItemDecorator>
+                                <Check />
+                              </ListItemDecorator>
+                              Max GPA Weight: {course.weight}
+                            </ListItem>
+                            <ListItem>
+                              <ListItemDecorator>
+                                <Check />
+                              </ListItemDecorator>
+                              Course Length: {course.length}
+                            </ListItem>
+                            <ListItem>
+                              <ListItemDecorator>
+                                <Check />
+                              </ListItemDecorator>
+                              Category Type: {course.type}
+                            </ListItem>
+                            <ListItem>
+                              <ListItemDecorator>
+                                <Check />
+                              </ListItemDecorator>
+                              Course Category: {course.category}
+                            </ListItem>
+                            <ListItem>
+                              <ListItemDecorator>
+                                <Check />
+                              </ListItemDecorator>
+                              Course Sub-category: {course.subcategory}
+                            </ListItem>
+                          </List>
+                          <Divider inset="none" />
+                          <CardActions>
+                            <Typography level="title-lg" sx={{ mr: "auto" }}>
+                              {course.cost}${"/ year"}
+                            </Typography>
+                            <Button endDecorator={<KeyboardArrowRight />}>
+                              Add To Cart
+                            </Button>
+                          </CardActions>
+                        </Card>
+                      </Link>
+                      <Divider />
+                    </Grid>
+                  ))
+                )}
               </Grid>
             </Item>
           </Grid>
