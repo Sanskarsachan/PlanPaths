@@ -56,7 +56,7 @@ const Header = () => {
             <>
               <Typography
                 component={Link}
-                to={"/Home"}
+                to={"/home"}
                 label="Home"
                 sx={{
                   fontSize: "2rem",
@@ -77,7 +77,7 @@ const Header = () => {
               />
               <Typography
                 component={Link}
-                to={"/Home"}
+                to={"/home"}
                 label="Home"
                 sx={{
                   fontSize: "2rem",
@@ -95,8 +95,8 @@ const Header = () => {
                 value={value}
                 onChange={(e, value) => setValue(value)}
               >
-                <Tab component={Link} to={"/Home"} label="Home" />
-                <Tab component={Link} to={"/Courses"} label="Courses" />
+                <Tab component={Link} to={"/home"} label="Home" />
+                <Tab component={Link} to={"/courses"} label="Courses" />
                 {/* <Search>
                   <SearchIconWrapper>
                     <SearchIcon />
@@ -106,12 +106,12 @@ const Header = () => {
                     inputProps={{ "aria-label": "search" }}
                   />{" "}
                 </Search> */}
-                <Tab component={Link} to={"/Plan"} label="Plan" />
-                <Tab component={Link} to={"/Whishlist"} label="Whishlist" />
+                <Tab component={Link} to={"/plan"} label="Plan" />
+                <Tab component={Link} to={"/whishlist"} label="Whishlist" />
               </Tabs>
               <Button
                 component={Link}
-                to={"/Login"}
+                to={"/login"}
                 sx={{ marginLeft: "auto" }}
                 variant="contained"
               >
@@ -119,7 +119,7 @@ const Header = () => {
               </Button>
               <Button
                 component={Link}
-                to={"/Signup"}
+                to={"/signup"}
                 sx={{ marginLeft: "10px" }}
                 variant="contained"
               >

@@ -1,4 +1,6 @@
 import * as React from "react";
+import axios from "axios";
+import { useEffect, useReducer, useState } from "react";
 import { useParams } from "react-router";
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
@@ -13,6 +15,7 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Rating from "@mui/material/Rating";
+import { Helmet } from "react-helmet-async";
 
 const Img = styled("img")({
   margin: "auto",
@@ -39,7 +42,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 function createData(name, calories) {
-  return { name, calories};
+  return { name, calories };
 }
 
 const rows = [
@@ -50,16 +53,51 @@ const rows = [
   createData("Gingerbread", 356),
 ];
 
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "FETCH_REQUEST":
+      return { ...state, loading: true };
+    case "FETCH_SUCCESS":
+      return { ...state, course: action.payload, loading: false };
+    case "FETCH_FAIL":
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
 export default function CourseDetails() {
   const params = useParams();
   const { code } = params;
+
+  const [{ loading, error, course }, dispatch] = useReducer(reducer, {
+    course: [],
+    loading: true,
+    error: "",
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      dispatch({ type: "FETCH_REQUEST" });
+      try {
+        const result = await axios.get(`/api/courses/code/${code}`);
+        dispatch({ type: "FETCH_SUCCESS", payload: result.data });
+      } catch (err) {
+        dispatch({ type: "FETCH_FAIL", payload: err.message });
+      }
+    };
+    fetchData();
+  }, [code]);
+
   return (
     <>
+      {" "}
+      <Helmet>{course.name}</Helmet>
       <Paper
         sx={{
           margin: "auto",
-          pt:10,
-          pb:5,
+          pt: 10,
+          pb: 5,
           maxWidth: 1000,
           flexGrow: 1,
           boxShadow: "none",
@@ -71,7 +109,7 @@ export default function CourseDetails() {
           container
           spacing={2}
           sx={{
-            pb: 2,  
+            pb: 2,
             mt: 2,
             border: "3px solid #D6D6D6",
             borderRadius: "8px",
@@ -89,23 +127,24 @@ export default function CourseDetails() {
             <Grid item xs container direction="column" spacing={2}>
               <Grid item xs>
                 <Typography gutterBottom variant="subtitle1" component="div">
-                  {code}
+                  {course.code}
                 </Typography>
                 <Typography variant="body2" gutterBottom>
-                  [1001315] [FL]
+                  [{course.code}] [FL]
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  <Rating name="read-only" value={4} readOnly /> 12
+                  <Rating name="read-only" value={course.rating} readOnly />{" "}
+                  {course.rating}
                   Reviews/Write A Review/14 answered questions
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Available Credits : 1.00
+                  Available Credits : {course.credits}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Course Level : Regular
+                  Course Level : {course.level}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Course Length : Credit Recovery
+                  Course Length : {course.length}
                 </Typography>
               </Grid>
               <Grid item>
@@ -137,7 +176,7 @@ export default function CourseDetails() {
                   Course Specification
                 </Typography>
                 <Typography variant="body2" gutterBottom>
-                  English 1 for Credit Recovery.
+                  {course.name}
                 </Typography>
               </Grid>
             </Grid>
@@ -156,7 +195,7 @@ export default function CourseDetails() {
                 variant="subtitle1"
                 component="div"
               >
-                English 1 for Credit Recovery
+                {course.desription}
               </Typography>
               <TableBody>
                 {rows.map((row) => (
@@ -187,10 +226,10 @@ export default function CourseDetails() {
             <Grid item xs container direction="column" spacing={2}>
               <Grid item xs>
                 <Typography gutterBottom variant="subtitle1" component="div">
-                  English 1 for Credit Recovery
+                  {course.name}
                 </Typography>
                 <Typography variant="body2" gutterBottom>
-                  [1001315] [FL]
+                  [{course.code}] [FL]
                 </Typography>
               </Grid>
             </Grid>
