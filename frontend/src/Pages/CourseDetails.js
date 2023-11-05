@@ -1,6 +1,6 @@
 import * as React from "react";
 import axios from "axios";
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer} from "react";
 import { useParams } from "react-router";
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
@@ -64,7 +64,7 @@ const reducer = (state, action) => {
     default:
       return state;
   }
-};
+}; 
 
 export default function CourseDetails() {
   const params = useParams();
@@ -75,6 +75,10 @@ export default function CourseDetails() {
     loading: true,
     error: "",
   });
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -96,8 +100,7 @@ export default function CourseDetails() {
       <Paper
         sx={{
           margin: "auto",
-          pt: 10,
-          pb: 5,
+          p: 3,
           maxWidth: 1000,
           flexGrow: 1,
           boxShadow: "none",
@@ -110,7 +113,6 @@ export default function CourseDetails() {
           spacing={2}
           sx={{
             pb: 2,
-            mt: 2,
             border: "3px solid #D6D6D6",
             borderRadius: "8px",
           }}

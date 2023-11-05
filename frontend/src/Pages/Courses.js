@@ -24,11 +24,12 @@ import PropTypes from "prop-types";
 import Checkbox from "@mui/material/Checkbox";
 import { AppBar, CssBaseline, IconButton, Toolbar } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer} from "react";
 import axios from "axios";
 import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import TuneIcon from '@mui/icons-material/Tune';
 import logger from "use-reducer-logger";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -236,7 +237,7 @@ function ResponsiveDrawer(props) {
               onClick={handleDrawerToggle}
               sx={{ mr: 2, display: { sm: "none" }, mt: 1 }}
             >
-              <MenuIcon />
+              <TuneIcon />
             </IconButton>
           </Toolbar>
         </AppBar>
@@ -288,7 +289,7 @@ function ResponsiveDrawer(props) {
             width: { sm: `calc(100% - ${drawerWidth}px)` },
           }}
         >
-          <Grid mt={18}>
+          <Grid mt={8}>
             <Item>
               <Grid container spacing={2}>
                 {loading ? (

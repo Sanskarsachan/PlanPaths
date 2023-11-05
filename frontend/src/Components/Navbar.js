@@ -15,6 +15,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import DrawerComp from "./Drawer";
 import { Link } from "react-router-dom";
+import Loader from "./Loader";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -25,6 +26,8 @@ const Search = styled("div")(({ theme }) => ({
   },
   marginRight: theme.spacing(2),
   marginLeft: 0,
+  marginTop: "8px",
+  height: "90%",
   width: "100%",
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(3),
@@ -34,7 +37,7 @@ const Search = styled("div")(({ theme }) => ({
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
-  height: "80%",
+  height: "100%",
   position: "absolute",
   pointerEvents: "none",
   display: "flex",
@@ -97,15 +100,15 @@ const Header = () => {
               >
                 <Tab component={Link} to={"/home"} label="Home" />
                 <Tab component={Link} to={"/courses"} label="Courses" />
-                {/* <Search>
+                <Search>
                   <SearchIconWrapper>
                     <SearchIcon />
                   </SearchIconWrapper>
-                  <InputBase
+                  <InputBase sx={{ml: "22%", color: "#fff"}}
                     placeholder="Search Courses…"
                     inputProps={{ "aria-label": "search" }}
                   />{" "}
-                </Search> */}
+                </Search>
                 <Tab component={Link} to={"/plan"} label="Plan" />
                 <Tab component={Link} to={"/whishlist"} label="Whishlist" />
               </Tabs>
@@ -129,6 +132,7 @@ const Header = () => {
           )}
         </Toolbar>
       </AppBar>
+      <Loader/>
     </React.Fragment>
   );
 };

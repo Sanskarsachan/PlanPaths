@@ -26,8 +26,7 @@ export default function Album() {
         <Box
           sx={{
             bgcolor: "background.paper",
-            pt: 8,
-            pb: 6,
+            pb: 4,
           }}
         >
           <Container maxWidth="sm">
