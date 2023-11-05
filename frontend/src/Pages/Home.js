@@ -10,7 +10,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Helmet } from "react-helmet-async";
+// import { Helmet } from "react-helmet-async";
 
 const cards = [1, 2, 3, 4];
 const defaultTheme = createTheme();
@@ -18,9 +18,9 @@ const defaultTheme = createTheme();
 export default function Album() {
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Helmet>
+      {/* <Helmet>
         <title>Planpaths</title>
-      </Helmet>
+      </Helmet> */}
       <CssBaseline />
       <main>
         <Box

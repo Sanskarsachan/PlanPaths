@@ -92,7 +92,7 @@ export default function CourseDetails() {
   return (
     <>
       {" "}
-      <Helmet>{course.name}</Helmet>
+      {/* <Helmet>{course.name}</Helmet> */}
       <Paper
         sx={{
           margin: "auto",
