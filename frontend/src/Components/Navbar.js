@@ -53,8 +53,8 @@ const Header = () => {
   console.log(isMatch);
   return (
     <React.Fragment>
-      <AppBar sx={{ background: "#2c2f31"}}>
-        <Toolbar >
+      <AppBar sx={{ background: "#2c2f31" }}>
+        <Toolbar>
           {isMatch ? (
             <>
               <Typography
@@ -104,7 +104,8 @@ const Header = () => {
                   <SearchIconWrapper>
                     <SearchIcon />
                   </SearchIconWrapper>
-                  <InputBase sx={{ml: "22%", color: "#fff"}}
+                  <InputBase
+                    sx={{ ml: "22%", color: "#fff" }}
                     placeholder="Search Courses…"
                     inputProps={{ "aria-label": "search" }}
                   />{" "}
@@ -132,7 +133,7 @@ const Header = () => {
           )}
         </Toolbar>
       </AppBar>
-      <Loader/>
+      <Loader />
     </React.Fragment>
   );
 };

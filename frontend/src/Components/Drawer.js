@@ -19,6 +19,7 @@ const DrawerComp = () => {
         anchor="left"
         open={openDrawer}
         onClose={() => setOpenDrawer(false)}
+        style={{ overflow: "auto" }}
       >
         <List>
           {pages.map((page, index) => (

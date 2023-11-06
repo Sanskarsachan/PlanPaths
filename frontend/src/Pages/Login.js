@@ -37,7 +37,7 @@ export default function SignIn() {
         direction="column"
         alignItems="center"
         justifyContent="center"
-        sx={{ minHeight: "75vh", marginTop: "10%" }}
+        sx={{ minHeight: "100vh" }}
       >
         <CssBaseline />
         <Box

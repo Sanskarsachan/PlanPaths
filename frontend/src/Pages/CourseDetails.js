@@ -1,6 +1,6 @@
 import * as React from "react";
 import axios from "axios";
-import { useEffect, useReducer} from "react";
+import { useEffect, useReducer } from "react";
 import { useParams } from "react-router";
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
@@ -15,6 +15,10 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Rating from "@mui/material/Rating";
+import CardMedia from "@mui/material/CardMedia";
+import Loader from "../Components/Loader";
+import MessageAlerts from "../Components/Message";
+import { getError } from '../utils';
 import { Helmet } from "react-helmet-async";
 
 const Img = styled("img")({
@@ -41,16 +45,24 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(name, calories) {
-  return { name, calories };
+function createData(specs, details) {
+  return { specs, details };
 }
 
 const rows = [
-  createData("Frozen yoghurt", 159),
-  createData("Ice cream sandwich", 237),
-  createData("Eclair", 262),
-  createData("Cupcake", 305),
-  createData("Gingerbread", 356),
+  createData("Category Type", 159),
+  createData("Course Category", 237),
+  createData("Course Sub-Category", 262),
+  createData("Course Level", 305),
+  createData("Available Credits", 356),
+  createData("Max GPA Weight", 356),
+  createData("Course Length", 356),
+  createData("Course Code", 356),
+  createData("Career Tech Elective", 356),
+  createData("Has Prerequisites", 356),
+  createData("Prerequisites", 356),
+  createData("Required (Generally)", 356),
+  createData("End of Course (Generally)", 356),
 ];
 
 const reducer = (state, action) => {
@@ -64,7 +76,7 @@ const reducer = (state, action) => {
     default:
       return state;
   }
-}; 
+};
 
 export default function CourseDetails() {
   const params = useParams();
@@ -77,8 +89,8 @@ export default function CourseDetails() {
   });
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,7 +99,7 @@ export default function CourseDetails() {
         const result = await axios.get(`/api/courses/code/${code}`);
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (err) {
-        dispatch({ type: "FETCH_FAIL", payload: err.message });
+        dispatch({ type: "FETCH_FAIL", payload: getError(err) });
       }
     };
     fetchData();
@@ -97,147 +109,155 @@ export default function CourseDetails() {
     <>
       {" "}
       {/* <Helmet>{course.name}</Helmet> */}
-      <Paper
-        sx={{
-          margin: "auto",
-          p: 3,
-          maxWidth: 1000,
-          flexGrow: 1,
-          boxShadow: "none",
-          backgroundColor: (theme) =>
-            theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-        }}
-      >
-        <Grid
-          container
-          spacing={2}
+      {loading ? (
+        <div>
+          <Loader />
+        </div>
+      ) : error ? (
+        <MessageAlerts severity="error">{error}</MessageAlerts>
+      ) : (
+        <Paper
           sx={{
-            pb: 2,
-            border: "3px solid #D6D6D6",
-            borderRadius: "8px",
+            margin: "auto",
+            p: 3,
+            maxWidth: 1000,
+            flexGrow: 1,
+            boxShadow: "none",
+            backgroundColor: (theme) =>
+              theme.palette.mode === "dark" ? "#1A2027" : "#fff",
           }}
         >
-          <Grid item>
-            <ButtonBase sx={{ width: 128, height: 128 }}>
-              <Img
-                alt="complex"
-                src="https://image.pi7.org/static/img/ic_100kb.png"
-              />
-            </ButtonBase>
-          </Grid>
-          <Grid item xs={12} sm container>
-            <Grid item xs container direction="column" spacing={2}>
-              <Grid item xs>
-                <Typography gutterBottom variant="subtitle1" component="div">
-                  {course.code}
-                </Typography>
-                <Typography variant="body2" gutterBottom>
-                  [{course.code}] [FL]
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  <Rating name="read-only" value={course.rating} readOnly />{" "}
-                  {course.rating}
-                  Reviews/Write A Review/14 answered questions
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Available Credits : {course.credits}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Course Level : {course.level}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Course Length : {course.length}
-                </Typography>
+          <Grid
+            container
+            spacing={2}
+            sx={{
+              pb: 2,
+              border: "3px solid #D6D6D6",
+              borderRadius: "8px",
+            }}
+          >
+            <Grid item>
+              <ButtonBase sx={{ width: 128, height: 128 }}>
+                <CardMedia
+                  component="div"
+                  image="https://source.unsplash.com/random?wallpapers"
+                />
+              </ButtonBase>
+            </Grid>
+            <Grid item xs={12} sm container>
+              <Grid item xs container direction="column" spacing={2}>
+                <Grid item xs>
+                  <Typography gutterBottom variant="subtitle1" component="div">
+                    {course.code}
+                  </Typography>
+                  <Typography variant="body2" gutterBottom>
+                    [{course.code}] [FL]
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    <Rating name="read-only" value={course.rating} readOnly />{" "}
+                    {course.rating +
+                      " Reviews / Write A Review / 14 answered questions"}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {"Available Credits : " + course.credits}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {"Course Level : " + course.level}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {"Course Length : " + course.length}
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    sx={{ backgroundColor: "#1A2027" }}
+                    endIcon={<ShoppingCartIcon />}
+                  >
+                    Add To Cart
+                  </Button>
+                </Grid>
               </Grid>
-              <Grid item>
-                <Button
-                  variant="contained"
-                  sx={{ backgroundColor: "#1A2027" }}
-                  endIcon={<ShoppingCartIcon />}
+            </Grid>
+          </Grid>
+          <Grid
+            container
+            spacing={2}
+            sx={{
+              pb: 1,
+              mt: 2,
+              border: "3px solid #D6D6D6",
+              borderRadius: "8px",
+            }}
+          >
+            <Grid item xs={12} sm container>
+              <Grid item xs container direction="column" spacing={2}>
+                <Grid item xs>
+                  <Typography gutterBottom variant="subtitle1" component="div">
+                    Course Specification
+                  </Typography>
+                  <Typography variant="body2" gutterBottom>
+                    {course.name}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid
+            container
+            spacing={2}
+            sx={{ mt: 2, border: "3px solid #D6D6D6", borderRadius: "8px" }}
+          >
+            <TableContainer component={Paper}>
+              <Table aria-label="customized table">
+                <Typography
+                  sx={{ p: 1 }}
+                  gutterBottom
+                  variant="subtitle1"
+                  component="div"
                 >
-                  Add To Cart
-                </Button>
+                  {course.desription}
+                </Typography>
+                <TableBody>
+                  {rows.map((row) => (
+                    <StyledTableRow key={row.specs}>
+                      <StyledTableCell component="th" scope="row">
+                        {row.specs}
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        {row.details}
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Grid>
+          <Grid
+            container
+            spacing={2}
+            sx={{
+              pb: 1,
+              mt: 2,
+              border: "3px solid #D6D6D6",
+              borderRadius: "8px",
+            }}
+          >
+            <Grid item xs={12} sm container>
+              <Grid item xs container direction="column" spacing={2}>
+                <Grid item xs>
+                  <Typography gutterBottom variant="subtitle1" component="div">
+                    {course.name}
+                  </Typography>
+                  <Typography variant="body2" gutterBottom>
+                    [{course.code}] [FL]
+                  </Typography>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
-        <Grid
-          container
-          spacing={2}
-          sx={{
-            pb: 1,
-            mt: 2,
-            border: "3px solid #D6D6D6",
-            borderRadius: "8px",
-          }}
-        >
-          <Grid item xs={12} sm container>
-            <Grid item xs container direction="column" spacing={2}>
-              <Grid item xs>
-                <Typography gutterBottom variant="subtitle1" component="div">
-                  Course Specification
-                </Typography>
-                <Typography variant="body2" gutterBottom>
-                  {course.name}
-                </Typography>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid
-          container
-          spacing={2}
-          sx={{ mt: 2, border: "3px solid #D6D6D6", borderRadius: "8px" }}
-        >
-          <TableContainer component={Paper}>
-            <Table aria-label="customized table">
-              <Typography
-                sx={{ p: 1 }}
-                gutterBottom
-                variant="subtitle1"
-                component="div"
-              >
-                {course.desription}
-              </Typography>
-              <TableBody>
-                {rows.map((row) => (
-                  <StyledTableRow key={row.name}>
-                    <StyledTableCell component="th" scope="row">
-                      {row.name}
-                    </StyledTableCell>
-                    <StyledTableCell align="left">
-                      {row.calories}
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Grid>
-        <Grid
-          container
-          spacing={2}
-          sx={{
-            pb: 1,
-            mt: 2,
-            border: "3px solid #D6D6D6",
-            borderRadius: "8px",
-          }}
-        >
-          <Grid item xs={12} sm container>
-            <Grid item xs container direction="column" spacing={2}>
-              <Grid item xs>
-                <Typography gutterBottom variant="subtitle1" component="div">
-                  {course.name}
-                </Typography>
-                <Typography variant="body2" gutterBottom>
-                  [{course.code}] [FL]
-                </Typography>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Paper>
+        </Paper>
+      )}
       {/* ))} */}
     </>
   );

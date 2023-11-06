@@ -23,14 +23,16 @@ import Paper from "@mui/material/Paper";
 import PropTypes from "prop-types";
 import Checkbox from "@mui/material/Checkbox";
 import { AppBar, CssBaseline, IconButton, Toolbar } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import { useEffect, useReducer} from "react";
+import { useEffect, useReducer } from "react";
 import axios from "axios";
 import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import TuneIcon from '@mui/icons-material/Tune';
+import TuneIcon from "@mui/icons-material/Tune";
 import logger from "use-reducer-logger";
+import Loader from "../Components/Loader";
+import MessageAlerts from "../Components/Message";
+import { getError } from '../utils';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -91,7 +93,7 @@ function ResponsiveDrawer(props) {
         const result = await axios.get("/api/courses");
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (err) {
-        dispatch({ type: "FETCH_FAIL", payload: err.message });
+        dispatch({ type: "FETCH_FAIL", payload: getError(err) });
       }
     };
     fetchData();
@@ -125,93 +127,97 @@ function ResponsiveDrawer(props) {
             align: "center",
           }}
         />
-   {loading ? (
-                  <div>Loading...</div>
-                ) : error ? (
-                  <div>{error}</div>
-                ) : ( courses?.map((course) => {
-          const labelId = `checkbox-list-label-${course}`;
-          return (
-            <div sx={{ overflowy: "hidden" }}>
-              <ListItemButton onClick={handleClick}>
-                <ListItemText primary="Filter 1" />
-                {openFilter1 ? <ExpandLess /> : <ExpandMore />}
-              </ListItemButton>
-              <Collapse in={openFilter1} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  <ListItemButton
-                    sx={{ pl: 4 }}
-                    role={undefined}
-                    onClick={handleToggle(course)}
-                    dense
-                  >
-                    <ListItemIcon>
-                      <Checkbox
-                        edge="start"
-                        checked={checked.indexOf(course) !== -1}
-                        tabIndex={-1}
-                        disableRipple
-                        inputProps={{ "aria-labelledby": labelId }}
-                      />
-                    </ListItemIcon>
-                    <ListItemText primary="Data" />
-                  </ListItemButton>
-                  <ListItemButton
-                    sx={{ pl: 4 }}
-                    role={undefined}
-                    onClick={handleToggle(course)}
-                    dense
-                  >
-                    <ListItemIcon>
-                      <Checkbox
-                        edge="start"
-                        checked={checked.indexOf(course) !== -1}
-                        tabIndex={-1}
-                        disableRipple
-                        inputProps={{ "aria-labelledby": labelId }}
-                      />
-                    </ListItemIcon>
-                    <ListItemText primary="Data" />
-                  </ListItemButton>
-                  <ListItemButton
-                    sx={{ pl: 4 }}
-                    role={undefined}
-                    onClick={handleToggle(course)}
-                    dense
-                  >
-                    <ListItemIcon>
-                      <Checkbox
-                        edge="start"
-                        checked={checked.indexOf(course) !== -1}
-                        tabIndex={-1}
-                        disableRipple
-                        inputProps={{ "aria-labelledby": labelId }}
-                      />
-                    </ListItemIcon>
-                    <ListItemText primary="Data" />
-                  </ListItemButton>
-                  <ListItemButton
-                    sx={{ pl: 4 }}
-                    role={undefined}
-                    onClick={handleToggle(course)}
-                    dense
-                  >
-                    <ListItemIcon>
-                      <Checkbox
-                        edge="start"
-                        checked={checked.indexOf(course) !== -1}
-                        tabIndex={-1}
-                        disableRipple
-                        inputProps={{ "aria-labelledby": labelId }}
-                      />
-                    </ListItemIcon>
-                    <ListItemText primary="Data" />
-                  </ListItemButton>
-                </List>
-              </Collapse>
-            </div>
-          );
-          }))}
+        {loading ? (
+          <div>
+            <Loader />
+          </div>
+        ) : error ? (
+          <MessageAlerts severity="error">{error}</MessageAlerts>
+          ) : (
+          courses?.map((course) => {
+            const labelId = `checkbox-list-label-${course}`;
+            return (
+              <div sx={{ overflowy: "hidden" }}>
+                <ListItemButton onClick={handleClick}>
+                  <ListItemText primary="Filter 1" />
+                  {openFilter1 ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+                <Collapse in={openFilter1} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding>
+                    <ListItemButton
+                      sx={{ pl: 4 }}
+                      role={undefined}
+                      onClick={handleToggle(course)}
+                      dense
+                    >
+                      <ListItemIcon>
+                        <Checkbox
+                          edge="start"
+                          checked={checked.indexOf(course) !== -1}
+                          tabIndex={-1}
+                          disableRipple
+                          inputProps={{ "aria-labelledby": labelId }}
+                        />
+                      </ListItemIcon>
+                      <ListItemText primary="Data" />
+                    </ListItemButton>
+                    <ListItemButton
+                      sx={{ pl: 4 }}
+                      role={undefined}
+                      onClick={handleToggle(course)}
+                      dense
+                    >
+                      <ListItemIcon>
+                        <Checkbox
+                          edge="start"
+                          checked={checked.indexOf(course) !== -1}
+                          tabIndex={-1}
+                          disableRipple
+                          inputProps={{ "aria-labelledby": labelId }}
+                        />
+                      </ListItemIcon>
+                      <ListItemText primary="Data" />
+                    </ListItemButton>
+                    <ListItemButton
+                      sx={{ pl: 4 }}
+                      role={undefined}
+                      onClick={handleToggle(course)}
+                      dense
+                    >
+                      <ListItemIcon>
+                        <Checkbox
+                          edge="start"
+                          checked={checked.indexOf(course) !== -1}
+                          tabIndex={-1}
+                          disableRipple
+                          inputProps={{ "aria-labelledby": labelId }}
+                        />
+                      </ListItemIcon>
+                      <ListItemText primary="Data" />
+                    </ListItemButton>
+                    <ListItemButton
+                      sx={{ pl: 4 }}
+                      role={undefined}
+                      onClick={handleToggle(course)}
+                      dense
+                    >
+                      <ListItemIcon>
+                        <Checkbox
+                          edge="start"
+                          checked={checked.indexOf(course) !== -1}
+                          tabIndex={-1}
+                          disableRipple
+                          inputProps={{ "aria-labelledby": labelId }}
+                        />
+                      </ListItemIcon>
+                      <ListItemText primary="Data" />
+                    </ListItemButton>
+                  </List>
+                </Collapse>
+              </div>
+            );
+          })
+        )}
       </List>
     </div>
   );
@@ -293,9 +299,11 @@ function ResponsiveDrawer(props) {
             <Item>
               <Grid container spacing={2}>
                 {loading ? (
-                  <div>Loading...</div>
+                  <div>
+                    <Loader />
+                  </div>
                 ) : error ? (
-                  <div>{error}</div>
+                  <MessageAlerts severity="error">{error}</MessageAlerts>
                 ) : (
                   courses?.map((course) => (
                     <Grid
@@ -304,7 +312,7 @@ function ResponsiveDrawer(props) {
                     >
                       <Link
                         to={`/courses/${course.code}`}
-                        sx={{ textDecoration: "none" }}
+                        style={{ textDecoration: "none" }}
                       >
                         <Card
                           key={course}
