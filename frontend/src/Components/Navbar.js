@@ -16,6 +16,10 @@ import InputBase from "@mui/material/InputBase";
 import DrawerComp from "./Drawer";
 import { Link } from "react-router-dom";
 import Loader from "./Loader";
+import Badge from '@mui/material/Badge';
+import AutoStoriesIcon from "@mui/icons-material/AutoStories";
+import { useContext } from 'react';
+import { Store } from '../Store';
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -48,6 +52,8 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 const Header = () => {
   const [value, setValue] = useState();
   const theme = useTheme();
+  const { state } = useContext(Store);
+  const { cart } = state;
   console.log(theme);
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
   console.log(isMatch);
@@ -113,6 +119,15 @@ const Header = () => {
                 <Tab component={Link} to={"/plan"} label="Plan" />
                 <Tab component={Link} to={"/whishlist"} label="Whishlist" />
               </Tabs>
+              {cart.cartItems.length > 0 && (
+                <Badge badgeContent={cart.cartItems.length} color="primary">
+                <AutoStoriesIcon />
+                </Badge>
+                    // <Badge pill bg="danger">
+                    //   {cart.cartItems.length}
+                    // </Badge>
+                  )}
+              
               <Button
                 component={Link}
                 to={"/login"}

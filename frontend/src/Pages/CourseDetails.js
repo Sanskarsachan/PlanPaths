@@ -1,6 +1,6 @@
 import * as React from "react";
 import axios from "axios";
-import { useEffect, useReducer } from "react";
+import { useContext,useEffect, useReducer } from "react";
 import { useParams } from "react-router";
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
@@ -19,6 +19,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Loader from "../Components/Loader";
 import MessageAlerts from "../Components/Message";
 import { getError } from '../utils';
+import { Store } from '../Store';
 import { Helmet } from "react-helmet-async";
 
 const Img = styled("img")({
@@ -87,6 +88,14 @@ export default function CourseDetails() {
     loading: true,
     error: "",
   });
+
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const AddToCartHandler = () => {
+    ctxDispatch({
+      type: 'CART_ADD_ITEM',
+      payload: { ...course, quantity: 1 },
+    });
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -170,11 +179,12 @@ export default function CourseDetails() {
                 </Grid>
                 <Grid item>
                   <Button
+                    onClick={AddToCartHandler}
                     variant="contained"
                     sx={{ backgroundColor: "#1A2027" }}
                     endIcon={<ShoppingCartIcon />}
                   >
-                    Add To Cart
+                    Enroll
                   </Button>
                 </Grid>
               </Grid>

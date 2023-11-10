@@ -115,7 +115,7 @@ export default function Album() {
               color="text.secondary"
               paragraph
             >
-              Step1: Search your courses and Add to cart
+              Step1: Search your courses and enroll for free
             </Typography>
             <Typography
               variant="h7"

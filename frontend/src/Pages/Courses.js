@@ -33,6 +33,7 @@ import logger from "use-reducer-logger";
 import Loader from "../Components/Loader";
 import MessageAlerts from "../Components/Message";
 import { getError } from '../utils';
+import Spinner from "../Components/Spinner";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -129,7 +130,7 @@ function ResponsiveDrawer(props) {
         />
         {loading ? (
           <div>
-            <Loader />
+            <Spinner/>
           </div>
         ) : error ? (
           <MessageAlerts severity="error">{error}</MessageAlerts>
