@@ -1,7 +1,7 @@
 import * as React from "react";
 import axios from "axios";
-import { useContext,useEffect, useReducer } from "react";
-import { useParams } from "react-router";
+import { useContext, useEffect, useReducer } from "react";
+import { useNavigate, useParams } from "react-router";
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
@@ -18,8 +18,8 @@ import Rating from "@mui/material/Rating";
 import CardMedia from "@mui/material/CardMedia";
 import Loader from "../Components/Loader";
 import MessageAlerts from "../Components/Message";
-import { getError } from '../utils';
-import { Store } from '../Store';
+import { getError } from "../utils";
+import { Store } from "../Store";
 import { Helmet } from "react-helmet-async";
 
 const Img = styled("img")({
@@ -80,6 +80,7 @@ const reducer = (state, action) => {
 };
 
 export default function CourseDetails() {
+  const navigate = useNavigate();
   const params = useParams();
   const { code } = params;
 
@@ -90,16 +91,21 @@ export default function CourseDetails() {
   });
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const AddToCartHandler = () => {
+  const { cart } = state;
+  const AddToCartHandler = async () => {
+    const existItem = cart.cartItems.find((x) => x.code === course.code);
+    const seats = existItem ? existItem.seats + 1 : 1;
+    const { data } = await axios.get(`/api/courses/code/${code}`);
+    if (data.countInStock < seats) {
+      window.alert("Sorry. course is out of stock");
+      return;
+    }
     ctxDispatch({
-      type: 'CART_ADD_ITEM',
-      payload: { ...course, quantity: 1 },
+      type: "CART_ADD_ITEM",
+      payload: { ...course, seats },
     });
+    navigate("/plan");
   };
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -156,8 +162,8 @@ export default function CourseDetails() {
             <Grid item xs={12} sm container>
               <Grid item xs container direction="column" spacing={2}>
                 <Grid item xs>
-                  <Typography gutterBottom variant="subtitle1" component="div">
-                    {course.code}
+                  <Typography gutterBottom variant="h5" component="div">
+                    {course.name}
                   </Typography>
                   <Typography variant="body2" gutterBottom>
                     [{course.code}] [FL]
@@ -203,7 +209,7 @@ export default function CourseDetails() {
             <Grid item xs={12} sm container>
               <Grid item xs container direction="column" spacing={2}>
                 <Grid item xs>
-                  <Typography gutterBottom variant="subtitle1" component="div">
+                  <Typography gutterBottom variant="h6" component="div">
                     Course Specification
                   </Typography>
                   <Typography variant="body2" gutterBottom>
@@ -223,7 +229,7 @@ export default function CourseDetails() {
                 <Typography
                   sx={{ p: 1 }}
                   gutterBottom
-                  variant="subtitle1"
+                  variant="h6"
                   component="div"
                 >
                   {course.desription}
@@ -256,16 +262,78 @@ export default function CourseDetails() {
             <Grid item xs={12} sm container>
               <Grid item xs container direction="column" spacing={2}>
                 <Grid item xs>
-                  <Typography gutterBottom variant="subtitle1" component="div">
-                    {course.name}
+                  <Typography gutterBottom variant="h6" component="div">
+                    {"Course Reviews (" + course.review + ") "}
                   </Typography>
                   <Typography variant="body2" gutterBottom>
-                    [{course.code}] [FL]
+                    {"We don't have an reviews currently."}
                   </Typography>
                 </Grid>
               </Grid>
             </Grid>
           </Grid>
+          <Grid
+            container
+            spacing={2}
+            sx={{
+              pb: 1,
+              mt: 2,
+              border: "3px solid #D6D6D6",
+              borderRadius: "8px",
+            }}
+          >
+            <Grid item xs={12} sm container>
+              <Grid item xs container direction="column" spacing={2}>
+                <Grid item xs>
+                  <Typography gutterBottom variant="h6" component="div">
+                    {"Write a review"}
+                  </Typography>
+                  <Typography variant="body2" gutterBottom>
+                    {"Your review"}
+                  </Typography>
+                </Grid>
+                <Button
+                    onClick={AddToCartHandler}
+                    variant="contained"
+                    sx={{ backgroundColor: "#1A2027",  maxWidth: 300, ml: 2 }}
+                    endIcon={<ShoppingCartIcon />}
+                  >
+                    Post your review
+                  </Button>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid
+            container
+            spacing={2}
+            sx={{
+              pb: 1,
+              mt: 2,
+              border: "3px solid #D6D6D6",
+              borderRadius: "8px",
+            }}
+          >
+          <Grid item xs={12} sm container>
+              <Grid item xs container direction="column" spacing={2}>
+                <Grid item xs>
+                  <Typography gutterBottom variant="h6" component="div">
+                    {"Questions and answers (0)"}
+                  </Typography>
+                  <Typography variant="body2" gutterBottom>
+                    {"We don't have an questions and anwsers currently."}
+                  </Typography>
+                </Grid>
+                <Button
+                    onClick={AddToCartHandler}
+                    variant="contained"
+                    sx={{ backgroundColor: "#1A2027",  maxWidth: 300, ml: 2 }}
+                    endIcon={<ShoppingCartIcon />}
+                  >
+                    Ask your questions
+                  </Button>
+              </Grid>
+            </Grid>
+            </Grid>
         </Paper>
       )}
       {/* ))} */}

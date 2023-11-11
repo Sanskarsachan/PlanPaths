@@ -8,6 +8,7 @@ import Login from "./Pages/Login";
 import CourseDetails from "./Pages/CourseDetails";
 import { Route, Routes } from "react-router-dom";
 import Footer from "./Components/Footer";
+import Cart from "./Pages/Cart";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/courses" element={<Courses />} />
+        <Route path="/plan" element={<Cart />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/courses/:code" element={<CourseDetails />} />

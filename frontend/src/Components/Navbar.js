@@ -16,10 +16,10 @@ import InputBase from "@mui/material/InputBase";
 import DrawerComp from "./Drawer";
 import { Link } from "react-router-dom";
 import Loader from "./Loader";
-import Badge from '@mui/material/Badge';
+import Badge from "@mui/material/Badge";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
-import { useContext } from 'react';
-import { Store } from '../Store';
+import { useContext } from "react";
+import { Store } from "../Store";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -120,14 +120,16 @@ const Header = () => {
                 <Tab component={Link} to={"/whishlist"} label="Whishlist" />
               </Tabs>
               {cart.cartItems.length > 0 && (
-                <Badge badgeContent={cart.cartItems.length} color="primary">
-                <AutoStoriesIcon />
+                <Badge
+                  component={Link}
+                  to={"/plan"}
+                  badgeContent={cart.cartItems.reduce((a, c) => a + c.seats, 0)}
+                  color="primary"
+                  style={{ color:'#fff' }}
+                >
+                  <AutoStoriesIcon />
                 </Badge>
-                    // <Badge pill bg="danger">
-                    //   {cart.cartItems.length}
-                    // </Badge>
-                  )}
-              
+              )}
               <Button
                 component={Link}
                 to={"/login"}

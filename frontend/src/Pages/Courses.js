@@ -80,7 +80,7 @@ function ResponsiveDrawer(props) {
         return state;
     }
   };
-
+ 
   const [{ loading, error, courses }, dispatch] = useReducer(logger(reducer), {
     courses: [],
     loading: true,
@@ -350,7 +350,7 @@ function ResponsiveDrawer(props) {
                             }}
                           >
                             <ListItem>
-                              <Rating name="read-only" value={4} readOnly />
+                              <Rating name="read-only" value={course.rating} readOnly />
                             </ListItem>
                             <ListItem>Reviews {course.review}</ListItem>
                           </List>
