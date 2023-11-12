@@ -20,6 +20,8 @@ import Badge from "@mui/material/Badge";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import { useContext } from "react";
 import { Store } from "../Store";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -52,11 +54,24 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 const Header = () => {
   const [value, setValue] = useState();
   const theme = useTheme();
-  const { state } = useContext(Store);
-  const { cart } = state;
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { cart, userInfo } = state;
   console.log(theme);
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
   console.log(isMatch);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const signoutHandler = () => {
+    ctxDispatch({ type: "USER_SIGNOUT" });
+    localStorage.removeItem("userInfo");
+  };
   return (
     <React.Fragment>
       <AppBar sx={{ background: "#2c2f31" }}>
@@ -125,27 +140,62 @@ const Header = () => {
                   to={"/plan"}
                   badgeContent={cart.cartItems.reduce((a, c) => a + c.seats, 0)}
                   color="primary"
-                  style={{ color:'#fff' }}
+                  style={{ color: "#fff" }}
                 >
                   <AutoStoriesIcon />
                 </Badge>
               )}
-              <Button
-                component={Link}
-                to={"/login"}
-                sx={{ marginLeft: "auto" }}
-                variant="contained"
-              >
-                Login
-              </Button>
-              <Button
-                component={Link}
-                to={"/signup"}
-                sx={{ marginLeft: "10px" }}
-                variant="contained"
-              >
-                SignUp
-              </Button>
+              {userInfo ? (
+                <>
+                  <Button
+                    id="basic-button"
+                    aria-controls={open ? "basic-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick}
+                    title={userInfo.name}
+                    style={{ color: "#fff" }}
+                  >
+                    {userInfo.name}
+                  </Button>
+                  <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                      "aria-labelledby": "basic-button",
+                    }}
+                  >
+                    <MenuItem component={Link} to={"/plan"}>
+                     Your plans
+                    </MenuItem>
+                    <MenuItem component={Link} to={"/profile"}>
+                      My account
+                    </MenuItem>
+                    <MenuItem onClick={signoutHandler}>Logout</MenuItem>
+                  </Menu>
+                </>
+              ) : (
+                <div>
+                  <Button
+                    component={Link}
+                    to={"/login"}
+                    sx={{ marginLeft: "auto" }}
+                    variant="contained"
+                  >
+                    Login
+                  </Button>
+                  <Button
+                    component={Link}
+                    to={"/signup"}
+                    sx={{ marginLeft: "10px" }}
+                    variant="contained"
+                  >
+                    SignUp
+                  </Button>
+                </div>
+              )}
             </>
           )}
         </Toolbar>

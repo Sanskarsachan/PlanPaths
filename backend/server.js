@@ -1,29 +1,34 @@
-import express from 'express';
-import data from './data.js';
+import express from "express";
+import data from "./data.js";
+import dotenv from "dotenv";
+import mongoose from "mongoose";
+import seedRouter from "./routes/seedRoutes.js";
+import courseRouter from "./routes/CourseRoutes.js";
+import userRouter from './routes/userRoutes.js';
+
+dotenv.config();
+
+mongoose
+  .connect(process.env.MONGODB_URI, { useNewUrlParser: true })
+  .then(() => {
+    console.log("connected to db");
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
 
 const app = express();
-app.get('/api/courses', (req, res) => {
-  res.send(data.courses);
-});
 
-app.get('/api/courses/code/:code',(req,res) => {
-  const course = data.courses.find((x) => x.code === req.params.code);
-  if(course){
-    res.send(course);
-  }
-  else {
-    res.status(404).send({message: 'course Not Found'});
-  }
-});
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// app.get('/api/courses/:code', (req, res) => {
-//   const course = data.courses.find((x) => x.code === req.params.code);
-//   if (course) {
-//     res.send(course);
-//   } else {
-//     res.status(404).send({ message: 'course Not Found' });
-//   }
-// });
+app.use('/api/seed', seedRouter);
+app.use('/api/courses', courseRouter);
+app.use('/api/users', userRouter);
+
+app.use((err, req, res, next) => {
+  res.status(500).send({ message: err.message });
+});
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
