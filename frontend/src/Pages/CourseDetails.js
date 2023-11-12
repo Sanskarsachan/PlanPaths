@@ -293,13 +293,13 @@ export default function CourseDetails() {
                   </Typography>
                 </Grid>
                 <Button
-                    onClick={AddToCartHandler}
-                    variant="contained"
-                    sx={{ backgroundColor: "#1A2027",  maxWidth: 300, ml: 2 }}
-                    endIcon={<ShoppingCartIcon />}
-                  >
-                    Post your review
-                  </Button>
+                  onClick={AddToCartHandler}
+                  variant="contained"
+                  sx={{ backgroundColor: "#1A2027", maxWidth: 300, ml: 2 }}
+                  endIcon={<ShoppingCartIcon />}
+                >
+                  Post your review
+                </Button>
               </Grid>
             </Grid>
           </Grid>
@@ -313,7 +313,7 @@ export default function CourseDetails() {
               borderRadius: "8px",
             }}
           >
-          <Grid item xs={12} sm container>
+            <Grid item xs={12} sm container>
               <Grid item xs container direction="column" spacing={2}>
                 <Grid item xs>
                   <Typography gutterBottom variant="h6" component="div">
@@ -324,16 +324,16 @@ export default function CourseDetails() {
                   </Typography>
                 </Grid>
                 <Button
-                    onClick={AddToCartHandler}
-                    variant="contained"
-                    sx={{ backgroundColor: "#1A2027",  maxWidth: 300, ml: 2 }}
-                    endIcon={<ShoppingCartIcon />}
-                  >
-                    Ask your questions
-                  </Button>
+                  onClick={AddToCartHandler}
+                  variant="contained"
+                  sx={{ backgroundColor: "#1A2027", maxWidth: 300, ml: 2 }}
+                  endIcon={<ShoppingCartIcon />}
+                >
+                  Ask your questions
+                </Button>
               </Grid>
             </Grid>
-            </Grid>
+          </Grid>
         </Paper>
       )}
       {/* ))} */}

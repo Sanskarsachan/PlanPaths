@@ -168,7 +168,7 @@ const Header = () => {
                     }}
                   >
                     <MenuItem component={Link} to={"/plan"}>
-                     Your plans
+                      Your plans
                     </MenuItem>
                     <MenuItem component={Link} to={"/profile"}>
                       My account

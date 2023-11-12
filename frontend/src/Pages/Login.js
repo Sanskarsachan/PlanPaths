@@ -1,6 +1,6 @@
 import * as React from "react";
-import Axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import Axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 // import { Redirect } from 'react-router';
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -14,10 +14,10 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useContext, useEffect, useState } from 'react';
-import { Store } from '../Store';
-import { toast } from 'react-toastify';
-import { getError } from '../utils';
+import { useContext, useEffect, useState } from "react";
+import { Store } from "../Store";
+import { toast } from "react-toastify";
+import { getError } from "../utils";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -34,20 +34,20 @@ export default function SignIn() {
     });
   };
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await Axios.post('/api/users/signin', {
+      const { data } = await Axios.post("/api/users/signin", {
         email,
         password,
       });
-      ctxDispatch({ type: 'USER_SIGNIN', payload: data });
-      localStorage.setItem('userInfo', JSON.stringify(data));
+      ctxDispatch({ type: "USER_SIGNIN", payload: data });
+      localStorage.setItem("userInfo", JSON.stringify(data));
       navigate("/home");
     } catch (err) {
       toast.error(getError(err));

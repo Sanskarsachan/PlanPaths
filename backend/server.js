@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import seedRouter from "./routes/seedRoutes.js";
 import courseRouter from "./routes/CourseRoutes.js";
-import userRouter from './routes/userRoutes.js';
+import userRouter from "./routes/userRoutes.js";
 
 dotenv.config();
 
@@ -22,9 +22,9 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/api/seed', seedRouter);
-app.use('/api/courses', courseRouter);
-app.use('/api/users', userRouter);
+app.use("/api/seed", seedRouter);
+app.use("/api/courses", courseRouter);
+app.use("/api/users", userRouter);
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
