@@ -19,11 +19,11 @@ const data = {
     {
       name: "English 1 for Credit Recovery", //absolute
       code: "1001001", //absolute
-      type: "English", //absolute
+      type: "English 1", //absolute
       tag: "Tagline",
       credits: 1.0,
       length: "Credit Recovery",
-      category: "English",
+      category: "English 1",
       level: "Regular",
       weight: 4.0,
       subcategory: "English",
@@ -40,11 +40,11 @@ const data = {
     {
       name: "English 2 for Credit Recovery",
       code: "1001002",
-      type: "English",
+      type: "English 2",
       tag: "Tagline",
       credits: 1.0,
       length: "Credit Recovery",
-      category: "English",
+      category: "English 2",
       level: "Regular",
       weight: 4.0,
       subcategory: "English",
@@ -61,11 +61,11 @@ const data = {
     {
       name: "English 3 for Credit Recovery",
       code: "1001003",
-      type: "English",
+      type: "English 3",
       tag: "Tagline",
       credits: 1.0,
       length: "Credit Recovery",
-      category: "English",
+      category: "English 3",
       level: "Regular",
       weight: 4.0,
       subcategory: "English",
@@ -82,11 +82,11 @@ const data = {
     {
       name: "English 4 for Credit Recovery",
       code: "1001004",
-      type: "English",
+      type: "English 4",
       tag: "Tagline",
       credits: 1.0,
       length: "Credit Recovery",
-      category: "English",
+      category: "English 4",
       level: "Regular",
       weight: 4.0,
       subcategory: "English",
@@ -103,11 +103,11 @@ const data = {
     {
       name: "English 5 for Credit Recovery",
       code: "1001005",
-      type: "English",
+      type: "English 5",
       tag: "Tagline",
       credits: 1.0,
       length: "Credit Recovery",
-      category: "English",
+      category: "English 5",
       level: "Regular",
       weight: 4.0,
       subcategory: "English",
@@ -128,7 +128,7 @@ const data = {
       tag: "Tagline",
       credits: 1.0,
       length: "Credit Recovery",
-      category: "English",
+      category: "English 6",
       level: "Regular",
       weight: 4.0,
       subcategory: "English",

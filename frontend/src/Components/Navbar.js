@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   AppBar,
   Button,
@@ -18,7 +18,6 @@ import { Link } from "react-router-dom";
 import Loader from "./Loader";
 import Badge from "@mui/material/Badge";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
-import { useContext } from "react";
 import { Store } from "../Store";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -31,8 +30,6 @@ const Search = styled("div")(({ theme }) => ({
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
   marginRight: theme.spacing(2),
-  marginLeft: 0,
-  marginTop: "8px",
   height: "90%",
   width: "100%",
   [theme.breakpoints.up("sm")]: {
@@ -52,7 +49,7 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 }));
 
 const Header = () => {
-  const [value, setValue] = useState();
+  const [value, setValue] = useState(0);
   const theme = useTheme();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
@@ -83,33 +80,42 @@ const Header = () => {
                 to={"/home"}
                 label="Home"
                 sx={{
-                  fontSize: "2rem",
-                  paddingLeft: "10%",
+                  fontSize: "1rem",
+                  paddingLeft: "3%",
                   textDecoration: "none",
                   color: "#fff",
                 }}
               >
-                PlanPaths
+                <AddBusinessRoundedIcon
+                  sx={{ fontSize: "1.1rem", transform: "scale(2)" }}
+                />
               </Typography>
+              <Search sx={{ ml: 2, mt: "1px" }}>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <InputBase
+                  sx={{ ml: "25%", color: "#fff" }}
+                  placeholder="Search Courses…"
+                  inputProps={{ "aria-label": "search" }}
+                />{" "}
+              </Search>
               <DrawerComp />
             </>
           ) : (
             <>
-              <AddBusinessRoundedIcon
-                onChange={(e, value) => setValue(value)}
-                sx={{ transform: "scale(2)" }}
-              />
               <Typography
                 component={Link}
                 to={"/home"}
                 label="Home"
                 sx={{
-                  fontSize: "2rem",
+                  fontSize: "1.8rem",
                   paddingLeft: "1%",
                   textDecoration: "none",
                   color: "#fff",
                 }}
               >
+                <AddBusinessRoundedIcon sx={{ transform: "scale(2)" }} />{" "}
                 PlanPaths
               </Typography>
               <Tabs
@@ -121,7 +127,7 @@ const Header = () => {
               >
                 <Tab component={Link} to={"/home"} label="Home" />
                 <Tab component={Link} to={"/courses"} label="Courses" />
-                <Search>
+                <Search sx={{ ml: 0, mt: "8px" }}>
                   <SearchIconWrapper>
                     <SearchIcon />
                   </SearchIconWrapper>
@@ -133,18 +139,21 @@ const Header = () => {
                 </Search>
                 <Tab component={Link} to={"/plan"} label="Plan" />
                 <Tab component={Link} to={"/whishlist"} label="Whishlist" />
+                {/* {cart.cartItems.length > 0 && (
+                  <Badge
+                    component={Link}
+                    to={"/plan"}
+                    badgeContent={cart.cartItems.reduce(
+                      (a, c) => a + c.seats,
+                      0
+                    )}
+                    color="primary"
+                    style={{ color: "#fff" }}
+                  >
+                    <AutoStoriesIcon sx={{mt:3}} />
+                  </Badge>
+                )} */}
               </Tabs>
-              {cart.cartItems.length > 0 && (
-                <Badge
-                  component={Link}
-                  to={"/plan"}
-                  badgeContent={cart.cartItems.reduce((a, c) => a + c.seats, 0)}
-                  color="primary"
-                  style={{ color: "#fff" }}
-                >
-                  <AutoStoriesIcon />
-                </Badge>
-              )}
               {userInfo ? (
                 <>
                   <Button

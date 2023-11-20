@@ -3,7 +3,7 @@ import data from "./data.js";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import seedRouter from "./routes/seedRoutes.js";
-import courseRouter from "./routes/CourseRoutes.js";
+import courseRouter from "./routes/courseRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 
 dotenv.config();

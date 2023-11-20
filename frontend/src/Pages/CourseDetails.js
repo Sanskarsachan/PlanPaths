@@ -22,13 +22,6 @@ import { getError } from "../utils";
 import { Store } from "../Store";
 import { Helmet } from "react-helmet-async";
 
-const Img = styled("img")({
-  margin: "auto",
-  display: "block",
-  maxWidth: "100%",
-  maxHeight: "100%",
-});
-
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
@@ -121,13 +114,10 @@ export default function CourseDetails() {
   }, [code]);
 
   return (
-    <>
-      {" "}
+    <React.Fragment key={course}>
       {/* <Helmet>{course.name}</Helmet> */}
       {loading ? (
-        <div>
-          <Loader />
-        </div>
+        <Loader />
       ) : error ? (
         <MessageAlerts severity="error">{error}</MessageAlerts>
       ) : (
@@ -337,6 +327,6 @@ export default function CourseDetails() {
         </Paper>
       )}
       {/* ))} */}
-    </>
+    </React.Fragment>
   );
 }

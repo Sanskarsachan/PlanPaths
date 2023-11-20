@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
@@ -34,6 +34,7 @@ import Loader from "../Components/Loader";
 import MessageAlerts from "../Components/Message";
 import { getError } from "../utils";
 import Spinner from "../Components/Spinner";
+import { toast } from "react-toastify";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -49,18 +50,24 @@ function ResponsiveDrawer(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
+  const [openFilter1, setOpenFilter1] = React.useState(true);
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
   const [checked, setChecked] = React.useState([0]);
 
-  const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value);
+  const handleClick = () => {
+    setOpenFilter1(!openFilter1);
+  };
+
+  const handleToggle = (category) => () => {
+    const currentIndex = checked.indexOf(category);
     const newChecked = [...checked];
 
     if (currentIndex === -1) {
-      newChecked.push(value);
+      newChecked.push(category);
     } else {
       newChecked.splice(currentIndex, 1);
     }
@@ -87,6 +94,8 @@ function ResponsiveDrawer(props) {
     error: "",
   });
 
+  const [categories, setCategories] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
@@ -100,11 +109,19 @@ function ResponsiveDrawer(props) {
     fetchData();
   }, []);
 
-  const [openFilter1, setOpenFilter1] = React.useState(true);
-
-  const handleClick = () => {
-    setOpenFilter1(!openFilter1);
-  };
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { data } = await axios.get("/api/courses/categories");
+        setCategories(data);
+        console.log(data);
+      } catch (err) {
+        toast.error(getError(err));
+        console.log(err);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   const drawer = (
     <div>
@@ -128,6 +145,10 @@ function ResponsiveDrawer(props) {
             align: "center",
           }}
         />
+        <ListItemButton onClick={handleClick}>
+          <ListItemText primary="Category" />
+          {openFilter1 ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
         {loading ? (
           <div>
             <Spinner />
@@ -135,83 +156,33 @@ function ResponsiveDrawer(props) {
         ) : error ? (
           <MessageAlerts severity="error">{error}</MessageAlerts>
         ) : (
-          courses?.map((course) => {
-            const labelId = `checkbox-list-label-${course}`;
+          categories?.map((category) => {
+            // console.log('yes it is')
+            const labelId = `checkbox-list-label-${category}`;
             return (
               <div sx={{ overflowy: "hidden" }}>
-                <ListItemButton onClick={handleClick}>
-                  <ListItemText primary="Filter 1" />
-                  {openFilter1 ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
                 <Collapse in={openFilter1} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding>
+                  <List component="div" disablePadding key={category}>
                     <ListItemButton
                       sx={{ pl: 4 }}
                       role={undefined}
-                      onClick={handleToggle(course)}
+                      onClick={handleToggle(category)}
                       dense
                     >
                       <ListItemIcon>
                         <Checkbox
                           edge="start"
-                          checked={checked.indexOf(course) !== -1}
+                          // checked={checked.indexOf(category) !== -1}
                           tabIndex={-1}
                           disableRipple
                           inputProps={{ "aria-labelledby": labelId }}
                         />
                       </ListItemIcon>
-                      <ListItemText primary="Data" />
-                    </ListItemButton>
-                    <ListItemButton
-                      sx={{ pl: 4 }}
-                      role={undefined}
-                      onClick={handleToggle(course)}
-                      dense
-                    >
-                      <ListItemIcon>
-                        <Checkbox
-                          edge="start"
-                          checked={checked.indexOf(course) !== -1}
-                          tabIndex={-1}
-                          disableRipple
-                          inputProps={{ "aria-labelledby": labelId }}
-                        />
-                      </ListItemIcon>
-                      <ListItemText primary="Data" />
-                    </ListItemButton>
-                    <ListItemButton
-                      sx={{ pl: 4 }}
-                      role={undefined}
-                      onClick={handleToggle(course)}
-                      dense
-                    >
-                      <ListItemIcon>
-                        <Checkbox
-                          edge="start"
-                          checked={checked.indexOf(course) !== -1}
-                          tabIndex={-1}
-                          disableRipple
-                          inputProps={{ "aria-labelledby": labelId }}
-                        />
-                      </ListItemIcon>
-                      <ListItemText primary="Data" />
-                    </ListItemButton>
-                    <ListItemButton
-                      sx={{ pl: 4 }}
-                      role={undefined}
-                      onClick={handleToggle(course)}
-                      dense
-                    >
-                      <ListItemIcon>
-                        <Checkbox
-                          edge="start"
-                          checked={checked.indexOf(course) !== -1}
-                          tabIndex={-1}
-                          disableRipple
-                          inputProps={{ "aria-labelledby": labelId }}
-                        />
-                      </ListItemIcon>
-                      <ListItemText primary="Data" />
+                      <ListItemText component="link" primary={category} />
+                      <Link
+                        to={`/search?category=${category}`}
+                        onClick={() => setOpenFilter1(false)}
+                      />
                     </ListItemButton>
                   </List>
                 </Collapse>
