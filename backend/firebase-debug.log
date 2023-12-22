@@ -1,0 +1,25 @@
+[debug] [2023-12-22T20:37:33.888Z] ----------------------------------------------------------------------
+[debug] [2023-12-22T20:37:33.890Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\DELL\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2023-12-22T20:37:33.890Z] CLI Version:   12.9.1
+[debug] [2023-12-22T20:37:33.891Z] Platform:      win32
+[debug] [2023-12-22T20:37:33.891Z] Node Version:  v18.12.0
+[debug] [2023-12-22T20:37:33.892Z] Time:          Sat Dec 23 2023 02:07:33 GMT+0530 (India Standard Time)
+[debug] [2023-12-22T20:37:33.892Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-12-22T20:37:33.896Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2023-12-22T20:37:33.952Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-12-22T20:37:33.953Z] > authorizing via signed-in user (sanskar841singh@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\DELL\Desktop\PlanPaths\backend
+
+[debug] [2023-12-22T20:37:33.974Z] *** [apiv2] error from fetch(https://firebase-public.firebaseio.com/cli.json, {"headers":{},"method":"GET"}): FetchError: request to https://firebase-public.firebaseio.com/cli.json failed, reason: getaddrinfo ENOTFOUND firebase-public.firebaseio.com
+[warn] !  Unable to fetch the CLI MOTD and remote config. 
+[debug] [2023-12-22T20:37:33.976Z] Failed to fetch MOTD FirebaseError: Failed to make request to https://firebase-public.firebaseio.com/cli.json

@@ -18,10 +18,10 @@ const Img = styled("img")({
   maxHeight: "100%",
 });
 
-export default function Cart() {
+export default function Plan() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const {
-    cart: { cartItems },
+    plan: { planItems },
   } = state;
   //   const updateCartHandler = async (course, seats) => {
   //     const { data } = await axios.get(`/api/courses/${course.code}`);
@@ -35,7 +35,7 @@ export default function Cart() {
   //     });
   //   };
   const removeItemHandler = (course) => {
-    ctxDispatch({ type: "CART_REMOVE_ITEM", payload: course });
+    ctxDispatch({ type: "PLAN_REMOVE_ITEM", payload: course });
   };
 
   // const checkoutHandler = () => {
@@ -59,13 +59,13 @@ export default function Cart() {
       <Typography variant="h4" p={3} gutterBottom>
         My Plan
       </Typography>
-      {cartItems.length === 0 ? (
+      {planItems.length === 0 ? (
         <MessageAlerts>
           Cart is empty. <Link to="/">Go Shopping</Link>
         </MessageAlerts>
       ) : (
         <div>
-          {cartItems.map((course) => (
+          {planItems.map((course) => (
             <Link
               to={`/courses/${course.code}`}
               style={{ textDecoration: "none" }}

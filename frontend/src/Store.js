@@ -8,34 +8,36 @@ const initialState = {
     ? JSON.parse(localStorage.getItem("userInfo"))
     : null,
 
-  cart: {
-    cartItems: localStorage.getItem("cartItems")
-      ? JSON.parse(localStorage.getItem("cartItems"))
+  plan: {
+    planItems: localStorage.getItem("planItems")
+      ? JSON.parse(localStorage.getItem("planItems"))
       : [],
   },
 };
 function reducer(state, action) {
   switch (action.type) {
-    case "CART_ADD_ITEM":
-      // add to cart
+    case "PLAN_ADD_ITEM":
+      // add to plan
       const newItem = action.payload;
-      const existItem = state.cart.cartItems.find(
+      const existItem = state.plan.planItems.find(
         (course) => course.code === newItem.code
       );
-      const cartItems = existItem
-        ? state.cart.cartItems.map((course) =>
+      const planItems = existItem
+        ? state.plan.planItems.map((course) =>
             course.code === existItem.code ? newItem : course
           )
-        : [...state.cart.cartItems, newItem];
-      localStorage.setItem("cartItems", JSON.stringify(cartItems));
-      return { ...state, cart: { ...state.cart, cartItems } };
-    case "CART_REMOVE_ITEM": {
-      const cartItems = state.cart.cartItems.filter(
+        : [...state.plan.planItems, newItem];
+      localStorage.setItem("planItems", JSON.stringify(planItems));
+      return { ...state, plan: { ...state.plan, planItems } };
+    case "PLAN_REMOVE_ITEM": {
+      const planItems = state.plan.planItems.filter(
         (course) => course.code !== action.payload.code
       );
-      localStorage.setItem("cartItems", JSON.stringify(cartItems));
-      return { ...state, cart: { ...state.cart, cartItems } };
+      localStorage.setItem("planItems", JSON.stringify(planItems));
+      return { ...state, plan: { ...state.plan, planItems } };
     }
+    case 'PLAN_CLEAR':
+      return { ...state, plan: { ...state.plan, planItems: [] } };
     case "USER_SIGNIN":
       return { ...state, userInfo: action.payload };
     case "USER_SIGNOUT":

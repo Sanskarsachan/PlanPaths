@@ -16,8 +16,8 @@ import InputBase from "@mui/material/InputBase";
 import DrawerComp from "./Drawer";
 import { Link } from "react-router-dom";
 import Loader from "./Loader";
-import Badge from "@mui/material/Badge";
-import AutoStoriesIcon from "@mui/icons-material/AutoStories";
+// import Badge from "@mui/material/Badge";
+// import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import { Store } from "../Store";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -53,9 +53,9 @@ const Header = () => {
   const theme = useTheme();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
-  console.log(theme);
+  // console.log(theme);
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
-  console.log(isMatch);
+  // console.log(isMatch);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {

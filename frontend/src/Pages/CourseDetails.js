@@ -20,7 +20,7 @@ import Loader from "../Components/Loader";
 import MessageAlerts from "../Components/Message";
 import { getError } from "../utils";
 import { Store } from "../Store";
-import { Helmet } from "react-helmet-async";
+// import { Helmet } from "react-helmet-async";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
@@ -84,9 +84,9 @@ export default function CourseDetails() {
   });
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { cart } = state;
+  const { plan } = state;
   const AddToCartHandler = async () => {
-    const existItem = cart.cartItems.find((x) => x.code === course.code);
+    const existItem = plan.planItems.find((x) => x.code === course.code);
     const seats = existItem ? existItem.seats + 1 : 1;
     const { data } = await axios.get(`/api/courses/code/${code}`);
     if (data.countInStock < seats) {
@@ -94,7 +94,7 @@ export default function CourseDetails() {
       return;
     }
     ctxDispatch({
-      type: "CART_ADD_ITEM",
+      type: "PLAN_ADD_ITEM",
       payload: { ...course, seats },
     });
     navigate("/plan");

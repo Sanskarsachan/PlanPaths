@@ -21,6 +21,18 @@ courseRouter.get(
   })
 );
 
+courseRouter.get(
+  "/level",
+  expressAsyncHandler(async (req, res) => {
+    const level = await coursemodel.find().distinct("level");
+    if (level) {
+      res.send(level);
+    } else {
+      res.status(404).send({ message: "level not found" });
+    }
+  })
+);
+
 courseRouter.get("/code/:code", async (req, res) => {
   const course = await coursemodel.findOne({ code: { $eq: req.params.code } });
   if (course) {
