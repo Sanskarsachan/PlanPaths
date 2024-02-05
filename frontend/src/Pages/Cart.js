@@ -24,7 +24,7 @@ export default function Plan() {
     plan: { planItems },
   } = state;
   //   const updateCartHandler = async (course, seats) => {
-  //     const { data } = await axios.get(`/api/courses/${course.code}`);
+  //     const { data } = await axios.get("https://dark-duck-tuxedo.cyclic.app/api/courses/${course.code}");
   //     if (data.countInStock < seats) {
   //       window.alert('Sorry. Product is out of stock');
   //       return;

@@ -88,7 +88,7 @@ export default function CourseDetails() {
   const AddToCartHandler = async () => {
     const existItem = plan.planItems.find((x) => x.code === course.code);
     const seats = existItem ? existItem.seats + 1 : 1;
-    const { data } = await axios.get(`/api/courses/code/${code}`);
+    const { data } = await axios.get(`https://dark-duck-tuxedo.cyclic.app/api/courses/code/${code}`);
     if (data.countInStock < seats) {
       window.alert("Sorry. course is out of stock");
       return;
@@ -104,7 +104,7 @@ export default function CourseDetails() {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const result = await axios.get(`/api/courses/code/${code}`);
+        const result = await axios.get(`https://dark-duck-tuxedo.cyclic.app/api/courses/code/${code}`);
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (err) {
         dispatch({ type: "FETCH_FAIL", payload: getError(err) });

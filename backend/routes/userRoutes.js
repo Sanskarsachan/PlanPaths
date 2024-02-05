@@ -9,8 +9,11 @@ const userRouter = express.Router();
 userRouter.post(
   "/signin",
   expressAsyncHandler(async (req, res) => {
-    const user = await usermodel.findOne({ email: req.body.email });
+    console.log("inside signin", req.body)
+    const user = await usermodel.findOne({ email: req.body.email })
+    .catch(err=>console.log("the error is ", err));
     if (user) {
+      console.log("found user");
       if (bcrypt.compareSync(req.body.password, user.password)) {
         res.send({
           _id: user._id,
@@ -22,6 +25,7 @@ userRouter.post(
         return;
       }
     }
+    console.log("----------------error-------------")
     res.status(401).send({ message: "Invalid email or password" });
   })
 );

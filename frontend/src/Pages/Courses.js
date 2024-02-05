@@ -102,7 +102,8 @@ function ResponsiveDrawer(props) {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const result = await axios.get("/api/courses");
+        const result = await axios.get(`https://dark-duck-tuxedo.cyclic.app/api/courses`);
+        // const result = await axios.get(`/api/courses`);
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (err) {
         dispatch({ type: "FETCH_FAIL", payload: getError(err) });
@@ -114,12 +115,13 @@ function ResponsiveDrawer(props) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const { data } = await axios.get("/api/courses/categories");
+        const { data } = await axios.get(`https://dark-duck-tuxedo.cyclic.app/api/courses/categories`);
+        // const { data } = await axios.get(`/api/courses/categories`);
         setCategories(data);
-        console.log(data);
+        // console.log(data);
       } catch (err) {
         toast.error(getError(err));
-        console.log(err);
+        // console.log(err);
       }
     };
     fetchCategories();
@@ -128,12 +130,13 @@ function ResponsiveDrawer(props) {
   useEffect(() => {
     const fetchLevel = async () => {
       try {
-        const { data } = await axios.get("/api/courses/level");
+        const { data } = await axios.get(`https://dark-duck-tuxedo.cyclic.app/api/courses/level`);
+        // const { data } = await axios.get(`/api/courses/level`);
         setLevel(data);
-        console.log(data);
+        console.log("level is"+ data);
       } catch (err) {
-        toast.error(getError(err));
-        console.log(err);
+        toast.error(getError(err)+ "no level");
+        // console.log(err);
       }
     };
     fetchLevel();
@@ -162,223 +165,7 @@ function ResponsiveDrawer(props) {
           }}
         />
         <ListItemButton onClick={handleClick}>
-          <ListItemText primary="Filter Name" />
-          {openFilter1 ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
-        {loading ? (
-          <div>
-            <Spinner />
-          </div>
-        ) : error ? (
-          <MessageAlerts severity="error">{error}</MessageAlerts>
-        ) : (
-          categories?.map((category) => {
-            const labelId = `checkbox-list-label-${category}`;
-            return (
-              <div sx={{ overflowy: "hidden" }}>
-                <Collapse in={openFilter1} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding key={category}>
-                    <ListItemButton
-                      sx={{ pl: 4 }}
-                      role={undefined}
-                      onClick={handleToggle(category)}
-                      dense
-                    >
-                      <ListItemIcon>
-                        <Checkbox
-                          edge="start"
-                          // checked={checked.indexOf(category) !== -1}
-                          tabIndex={-1}
-                          disableRipple
-                          inputProps={{ "aria-labelledby": labelId }}
-                        />
-                      </ListItemIcon>
-                      <ListItemText component="link" primary={category} />
-                      <Link
-                        to={`/search?category=${category}`}
-                        onClick={() => setOpenFilter1(false)}
-                      />
-                    </ListItemButton>
-                  </List>
-                </Collapse>
-              </div>
-            );
-          })
-        )}
-      </List>
-      <List
-        sx={{
-          width: "100%",
-          maxWidth: 360,
-          bgcolor: "background.paper",
-          overflowy: "hidden",
-        }}
-        component="nav"
-      >
-        <ListItemButton onClick={handleClick}>
-          <ListItemText primary="Filter Name" />
-          {openFilter1 ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
-        {loading ? (
-          <div>
-            <Spinner />
-          </div>
-        ) : error ? (
-          <MessageAlerts severity="error">{error}</MessageAlerts>
-        ) : (
-          categories?.map((level) => {
-            const labelId = `checkbox-list-label-${level}`;
-            return (
-              <div sx={{ overflowy: "hidden" }}>
-                <Collapse in={openFilter1} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding key={level}>
-                    <ListItemButton
-                      sx={{ pl: 4 }}
-                      role={undefined}
-                      onClick={handleToggle(level)}
-                      dense
-                    >
-                      <ListItemIcon>
-                        <Checkbox
-                          edge="start"
-                          // checked={checked.indexOf(category) !== -1}
-                          tabIndex={-1}
-                          disableRipple
-                          inputProps={{ "aria-labelledby": labelId }}
-                        />
-                      </ListItemIcon>
-                      <ListItemText component="link" primary={level} />
-                      <Link
-                        to={`/search?category=${level}`}
-                        onClick={() => setOpenFilter1(false)}
-                      />
-                    </ListItemButton>
-                  </List>
-                </Collapse>
-              </div>
-            );
-          })
-        )}
-      </List>
-      <List
-        sx={{
-          width: "100%",
-          maxWidth: 360,
-          bgcolor: "background.paper",
-          overflowy: "hidden",
-        }}
-        component="nav"
-      >
-        <ListItemButton onClick={handleClick}>
-          <ListItemText primary="Filter Name" />
-          {openFilter1 ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
-        {loading ? (
-          <div>
-            <Spinner />
-          </div>
-        ) : error ? (
-          <MessageAlerts severity="error">{error}</MessageAlerts>
-        ) : (
-          categories?.map((category) => {
-            const labelId = `checkbox-list-label-${category}`;
-            return (
-              <div sx={{ overflowy: "hidden" }}>
-                <Collapse in={openFilter1} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding key={category}>
-                    <ListItemButton
-                      sx={{ pl: 4 }}
-                      role={undefined}
-                      onClick={handleToggle(category)}
-                      dense
-                    >
-                      <ListItemIcon>
-                        <Checkbox
-                          edge="start"
-                          // checked={checked.indexOf(category) !== -1}
-                          tabIndex={-1}
-                          disableRipple
-                          inputProps={{ "aria-labelledby": labelId }}
-                        />
-                      </ListItemIcon>
-                      <ListItemText component="link" primary={category} />
-                      <Link
-                        to={`/search?category=${category}`}
-                        onClick={() => setOpenFilter1(false)}
-                      />
-                    </ListItemButton>
-                  </List>
-                </Collapse>
-              </div>
-            );
-          })
-        )}
-      </List>
-      <List
-        sx={{
-          width: "100%",
-          maxWidth: 360,
-          bgcolor: "background.paper",
-          overflowy: "hidden",
-        }}
-        component="nav"
-      >
-        <ListItemButton onClick={handleClick}>
-          <ListItemText primary="Filter Name" />
-          {openFilter1 ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
-        {loading ? (
-          <div>
-            <Spinner />
-          </div>
-        ) : error ? (
-          <MessageAlerts severity="error">{error}</MessageAlerts>
-        ) : (
-          categories?.map((category) => {
-            const labelId = `checkbox-list-label-${category}`;
-            return (
-              <div sx={{ overflowy: "hidden" }}>
-                <Collapse in={openFilter1} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding key={category}>
-                    <ListItemButton
-                      sx={{ pl: 4 }}
-                      role={undefined}
-                      onClick={handleToggle(category)}
-                      dense
-                    >
-                      <ListItemIcon>
-                        <Checkbox
-                          edge="start"
-                          // checked={checked.indexOf(category) !== -1}
-                          tabIndex={-1}
-                          disableRipple
-                          inputProps={{ "aria-labelledby": labelId }}
-                        />
-                      </ListItemIcon>
-                      <ListItemText component="link" primary={category} />
-                      <Link
-                        to={`/search?category=${category}`}
-                        onClick={() => setOpenFilter1(false)}
-                      />
-                    </ListItemButton>
-                  </List>
-                </Collapse>
-              </div>
-            );
-          })
-        )}
-      </List>
-      <List
-        sx={{
-          width: "100%",
-          maxWidth: 360,
-          bgcolor: "background.paper",
-          overflowy: "hidden",
-        }}
-        component="nav"
-      >
-        <ListItemButton onClick={handleClick}>
-          <ListItemText primary="Filter Name" />
+          <ListItemText primary="Category" />
           {openFilter1 ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
         {loading ? (

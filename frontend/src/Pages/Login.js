@@ -33,7 +33,9 @@ export default function SignIn() {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await Axios.post("/api/users/signin", {
+      console.log("inside axios")
+      const { data } = await Axios.post("https://dark-duck-tuxedo.cyclic.app/api/users/signin", {
+      // const { data } = await Axios.post(`/api/users/signin`, {
         email,
         password,
       });
@@ -41,6 +43,7 @@ export default function SignIn() {
       localStorage.setItem("userInfo", JSON.stringify(data));
       navigate("/home");
     } catch (err) {
+      console.log(err.message)
       toast.error(getError(err));
     }
   };

@@ -53,7 +53,7 @@ const Header = () => {
   const theme = useTheme();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
-  // console.log(theme);
+  console.log(theme);
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
   // console.log(isMatch);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -153,8 +153,7 @@ const Header = () => {
                     <AutoStoriesIcon sx={{mt:3}} />
                   </Badge>
                 )} */}
-              </Tabs>
-              {userInfo ? (
+                {userInfo ? (
                 <>
                   <Button
                     id="basic-button"
@@ -165,8 +164,7 @@ const Header = () => {
                     title={userInfo.name}
                     style={{ color: "#fff" }}
                   >
-                    {userInfo.name}
-                  </Button>
+                    {userInfo.name}A
                   <Menu
                     id="basic-menu"
                     anchorEl={anchorEl}
@@ -184,6 +182,7 @@ const Header = () => {
                     </MenuItem>
                     <MenuItem onClick={signoutHandler}>Logout</MenuItem>
                   </Menu>
+                  </Button>
                 </>
               ) : (
                 <div>
@@ -205,6 +204,7 @@ const Header = () => {
                   </Button>
                 </div>
               )}
+              </Tabs>
             </>
           )}
         </Toolbar>

@@ -41,7 +41,8 @@ export default function SignUp() {
       return;
     }
     try {
-      const { data } = await Axios.post('/api/users/signup', {
+      // const { data } = await Axios.post(`https://dark-duck-tuxedo.cyclic.app/api/users/signup`, {
+        const { data } = await Axios.post(`/api/users/signup`, {
         name,
         email,
         password,
