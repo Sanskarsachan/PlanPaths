@@ -96,7 +96,6 @@ function ResponsiveDrawer(props) {
   });
 
   const [categories, setCategories] = useState([]);
-  const [level, setLevel] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -132,10 +131,9 @@ function ResponsiveDrawer(props) {
       try {
         const { data } = await axios.get(`https://dark-duck-tuxedo.cyclic.app/api/courses/level`);
         // const { data } = await axios.get(`/api/courses/level`);
-        setLevel(data);
-        console.log("level is"+ data);
+        console.log("level is" + data);
       } catch (err) {
-        toast.error(getError(err)+ "no level");
+        toast.error(getError(err) + "no level");
         // console.log(err);
       }
     };
