@@ -51,4 +51,16 @@ courseRouter.get("/:id", async (req, res) => {
   }
 });
 
+// search api
+courseRouter.get("/search", async (req, res) => {
+  try {
+    const queryParams = req.query;
+    const courses = await coursemodel.find(queryParams);
+    res.json(courses);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 export default courseRouter;
