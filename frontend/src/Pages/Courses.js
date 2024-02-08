@@ -133,7 +133,7 @@ function ResponsiveDrawer(props) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const { data } = await axios.get(`https://dark-duck-tuxedo.cyclic.app/api/courses/categories`);
+        const { data } = await axios.get(`https://dark-duck-tuxedo.cyclic.app/api/courses/subcategories`);
         // const { data } = await axios.get(`/api/courses/categories`);
         setCategories(data);
         // console.log(data);
@@ -237,7 +237,7 @@ function ResponsiveDrawer(props) {
         ) : error ? (
           <MessageAlerts severity="error">{error}</MessageAlerts>
         ) : (
-          categories?.map((subcategory) => {
+          subcategories?.map((subcategory) => {
             const labelId = `checkbox-list-label-${subcategory}`;
             return (
               <div sx={{ overflowy: "hidden" }}>
