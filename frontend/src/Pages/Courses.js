@@ -51,7 +51,8 @@ function ResponsiveDrawer(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
-  const [openFilter1, setOpenFilter1] = React.useState(true);
+  const [openFilter1, setOpenFilter1] = React.useState(false);
+  const [openFilter2, setOpenFilter2] = React.useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -61,6 +62,7 @@ function ResponsiveDrawer(props) {
 
   const handleClick = () => {
     setOpenFilter1(!openFilter1);
+    setOpenFilter2(!openFilter2);
   };
 
   const handleToggle = (category) => () => {
@@ -96,6 +98,7 @@ function ResponsiveDrawer(props) {
   });
 
   const [categories, setCategories] = useState([]);
+  const [subcategories, setSubCategories] = useState([]);
   const [level, setLevel] = useState([]);
 
   useEffect(() => {
@@ -110,6 +113,21 @@ function ResponsiveDrawer(props) {
       }
     };
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchSubCategories = async () => {
+      try {
+        const { data } = await axios.get(`https://dark-duck-tuxedo.cyclic.app/api/courses/categories`);
+        // const { data } = await axios.get(`/api/courses/categories`);
+        setSubCategories(data);
+        // console.log(data);
+      } catch (err) {
+        toast.error(getError(err));
+        // console.log(err);
+      }
+    };
+    fetchSubCategories();
   }, []);
 
   useEffect(() => {
@@ -175,16 +193,16 @@ function ResponsiveDrawer(props) {
         ) : error ? (
           <MessageAlerts severity="error">{error}</MessageAlerts>
         ) : (
-          categories?.map((category) => {
-            const labelId = `checkbox-list-label-${category}`;
+          categories?.map((subcategory) => {
+            const labelId = `checkbox-list-label-${subcategory}`;
             return (
               <div sx={{ overflowy: "hidden" }}>
                 <Collapse in={openFilter1} timeout="auto" unmountOnExit>
-                  <List component="div" disablePadding key={category}>
+                  <List component="div" disablePadding key={subcategory}>
                     <ListItemButton
                       sx={{ pl: 4 }}
                       role={undefined}
-                      onClick={handleToggle(category)}
+                      onClick={handleToggle(subcategory)}
                       dense
                     >
                       <ListItemIcon>
@@ -196,10 +214,54 @@ function ResponsiveDrawer(props) {
                           inputProps={{ "aria-labelledby": labelId }}
                         />
                       </ListItemIcon>
-                      <ListItemText component="link" primary={category} />
+                      <ListItemText component="link" primary={subcategory} />
                       <Link
-                        to={`/search?category=${category}`}
-                        onClick={() => setOpenFilter1(false)}
+                        to={`/search?category=${subcategory}`}
+                        onClick={() => setOpenFilter1(true)}
+                      />
+                    </ListItemButton>
+                  </List>
+                </Collapse>
+              </div>
+            );
+          })
+        )}
+        <ListItemButton onClick={handleClick}>
+          <ListItemText primary="Sub category" />
+          {openFilter2 ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+        {loading ? (
+          <div>
+            <Spinner />
+          </div>
+        ) : error ? (
+          <MessageAlerts severity="error">{error}</MessageAlerts>
+        ) : (
+          categories?.map((subcategory) => {
+            const labelId = `checkbox-list-label-${subcategory}`;
+            return (
+              <div sx={{ overflowy: "hidden" }}>
+                <Collapse in={openFilter2} timeout="auto" unmountOnExit>
+                  <List component="div" disablePadding key={subcategory}>
+                    <ListItemButton
+                      sx={{ pl: 4 }}
+                      role={undefined}
+                      onClick={handleToggle(subcategory)}
+                      dense
+                    >
+                      <ListItemIcon>
+                        <Checkbox
+                          edge="start"
+                          // checked={checked.indexOf(category) !== -1}
+                          tabIndex={-1}
+                          disableRipple
+                          inputProps={{ "aria-labelledby": labelId }}
+                        />
+                      </ListItemIcon>
+                      <ListItemText component="link" primary={subcategory} />
+                      <Link
+                        to={`/search?category=${subcategory}`}
+                        onClick={() => setOpenFilter2(true)}
                       />
                     </ListItemButton>
                   </List>

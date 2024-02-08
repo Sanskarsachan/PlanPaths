@@ -22,6 +22,18 @@ courseRouter.get(
 );
 
 courseRouter.get(
+  "/subcategories",
+  expressAsyncHandler(async (req, res) => {
+    const subcategories = await coursemodel.find().distinct("subcategory");
+    if (subcategories) {
+      res.send(subcategories);
+    } else {
+      res.status(404).send({ message: "Sub categories not found" });
+    }
+  })
+);
+
+courseRouter.get(
   "/level",
   expressAsyncHandler(async (req, res) => {
     const level = await coursemodel.find().distinct("level");

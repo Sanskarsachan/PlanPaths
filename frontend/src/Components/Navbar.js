@@ -209,7 +209,7 @@ const Header = () => {
           )}
         </Toolbar>
       </AppBar>
-      <Loader />
+      {/* <Loader /> */}
     </React.Fragment>
   );
 };
